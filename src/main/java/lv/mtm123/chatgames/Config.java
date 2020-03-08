@@ -6,5 +6,4 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class Config {
 
 
-
 }
