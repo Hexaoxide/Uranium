@@ -1,6 +1,6 @@
 name: ChatGames
 version: @version@
-main: lv.mtm123.chatgames.ChatGames
+main: net.draycia.chatgames.ChatGames
 api-version: 1.13
 softdepend: [Vault]
 authors: [MTM123, Vicarious]
