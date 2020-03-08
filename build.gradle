@@ -1,0 +1,69 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
+    }
+}
+
+apply plugin: 'java'
+
+group = pluginGroup
+version = pluginVersion
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+shadowJar{
+    minimize()
+    relocate 'ninja.leaping.configurate', 'lv.mtm123.chatgames.ninja.leaping.configurate'
+    relocate 'co.aikar.commands', 'lv.mtm123.chatgames.acf'
+}
+
+build.dependsOn shadowJar
+
+compileJava{
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+    maven {
+        name = 'aikar'
+        url = 'https://repo.aikar.co/content/groups/aikar/'
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+    compile 'net.kyori:text-api:3.0.0'
+    compile 'net.kyori:text-adapter-bukkit:3.0.3'
+    compile 'org.spongepowered:configurate-yaml:3.7-SNAPSHOT'
+    compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}

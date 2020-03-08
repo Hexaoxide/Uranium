@@ -1,0 +1,17 @@
+StaticRewards: true # If false, rewards are determined based on word size
+RewardPerWin: 1000 # Static amount of money earned for winning
+RewardPerCharacter: 100 # Dynamic amount of money earned per character for winning
+TimeBetweenGames: 300 # Time in seconds the plugin will wait before starting a new game
+AutoEndTime: 60 # Time in seconds before games will automatically end
+CancelWinningMessages: true # Should messages that win games be cancelled afterwards
+CommandsOnWin:
+  - 'eco give %player% %reward%'
+
+Language:
+  Failure: "&eGames &8» &7Nobody typed the word (%word%) in time!"
+
+  TypeStart: "&eGames &8» &aHover and type the word shown!"
+  UnscrambleStart: "&eGames &8» &aHover and unscramble the word shown!"
+
+  TypeSuccess: "&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!"
+  UnscrambleSuccess: "&eGames &8» &a%name% &6has unscrambled %word% in %seconds% seconds!"
