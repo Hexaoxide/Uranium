@@ -3,6 +3,8 @@ package net.draycia.chatgames;
 import net.draycia.chatgames.games.ChatGame;
 import net.draycia.chatgames.games.HoverGame;
 import net.draycia.chatgames.games.UnscrambleGame;
+import net.draycia.chatgames.util.Config;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -66,4 +68,9 @@ public final class ChatGames extends JavaPlugin implements Listener {
             }, this.getConfig().getInt("AutoEndTime") * 20);
         }, this.getConfig().getLong("TimeBetweenGames") * 20L);
     }
+
+    public Config getSettings() { //getConfig clashes with method from JavaPlugin :( So maybe we should call it Settings too?
+        throw new NotImplementedException();
+    }
+
 }
