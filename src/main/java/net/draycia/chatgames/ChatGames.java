@@ -18,6 +18,7 @@ public final class ChatGames extends JavaPlugin implements Listener {
     private Random random = new Random();
     private boolean lock = false;
 
+    @Override
     public void onEnable() {
         this.saveDefaultConfig();
         this.saveResource("words.txt", false);
@@ -25,6 +26,7 @@ public final class ChatGames extends JavaPlugin implements Listener {
         this.startNewGame();
     }
 
+    @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
     }
