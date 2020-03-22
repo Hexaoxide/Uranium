@@ -1,6 +1,7 @@
 package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
+import net.draycia.chatgames.util.Config;
 import net.kyori.text.TextComponent;
 import net.kyori.text.adapter.bukkit.TextAdapter;
 import net.kyori.text.event.HoverEvent;
@@ -18,10 +19,12 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class ChatGame {
 
     private ChatGames main;
+    private final Config config;
     private List<String> rewardCommands;
 
     ChatGame(ChatGames main) {
         this.main = main;
+        this.config = main.getSettings(); //Once again multiple names for config
         this.rewardCommands = main.getConfig().getStringList("CommandsOnWin");
     }
 
