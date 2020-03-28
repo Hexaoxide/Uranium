@@ -26,7 +26,7 @@ public class Config {
             .collect(Collectors.toMap(t -> t, t -> new GameConfig(), (e1, e2) -> e1, LinkedHashMap::new));
 
     @Setting
-    private Map<MessageKey, String> language = MessageKey.getDefaultMessages();
+    private Map<MessageKey, MessageList> language = MessageKey.getDefaultMessages();
 
     public int getTimeBetweenGames() {
         return timeBetweenGames;
@@ -40,7 +40,7 @@ public class Config {
         return cancelWinningMessages;
     }
 
-    public String getMessage(MessageKey key) {
+    public MessageList getMessage(MessageKey key) {
         return language.get(key); //Maybe getOrDefault(..., key.getDefaultMessage()) would be better? Not sure
     }
 

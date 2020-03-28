@@ -2,30 +2,38 @@ package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
 import net.draycia.chatgames.util.Config;
+import net.draycia.chatgames.util.MessageKey;
 import net.kyori.text.TextComponent;
 import net.kyori.text.adapter.bukkit.TextAdapter;
 import net.kyori.text.event.HoverEvent;
 import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class ChatGame {
 
-    private ChatGames main;
+    private final ChatGames main;
     private final Config config;
-    private List<String> rewardCommands;
+
+    //UUID, time in which player solved the challenge
+    private final Map<UUID, Double> playersWon;
 
     ChatGame(ChatGames main) {
         this.main = main;
         this.config = main.getSettings(); //Once again multiple names for config
-        this.rewardCommands = main.getConfig().getStringList("CommandsOnWin");
+        this.playersWon = new HashMap<>();
+    }
+
+    public Config getConfig() {
+        return config;
     }
 
     public abstract String getWord();
@@ -36,8 +44,15 @@ public abstract class ChatGame {
 
     abstract long getReward();
 
-    public List<String> getRewardCommands() {
-        return this.rewardCommands;
+    abstract List<String> getRewardCommands(int place);
+
+    public String getSuccessMessage(int place) {
+        return config.getMessage(MessageKey.TYPE_SUCCESS).get(place);
+        //return "&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!";
+    }
+
+    public String getFailureMessage() {
+        return "&eGames &8» &7Nobody typed the word in time!";
     }
 
     String getRandomWord() {
@@ -54,8 +69,8 @@ public abstract class ChatGame {
             }
 
             return line;
-        } catch (IOException var6) {
-            var6.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
             return "pizza";
         }
     }
@@ -67,37 +82,34 @@ public abstract class ChatGame {
     }
 
     public void onSuccess(Player player) {
-        String message;
-        if (this instanceof HoverGame) {
-            message = this.main.getConfig().getString("Language.TypeSuccess");
-        } else {
-            message = this.main.getConfig().getString("Language.UnscrambleSuccess");
-        }
-
-        if (message == null) {
-            message = "&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!";
-        }
 
         double duration = (double) (System.currentTimeMillis() - this.getStartTime()) / 1000.0D;
-        message = message.replace("%name%", player.getName()).replace("%seconds%", this.main.getDecimalFormat().format(duration)).replace("%word%", this.getWord());
+        playersWon.put(player.getUniqueId(), duration);
+        int place = playersWon.size();
+
+        String message = getSuccessMessage(place);
+        message = message.replace("%name%", player.getName())
+                .replace("%seconds%", this.main.getDecimalFormat().format(duration))
+                .replace("%word%", this.getWord());
+        message = setPlaceholders(message);
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         String finalMessage = message;
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(finalMessage));
 
-        getRewardCommands().forEach(reward -> {
+        getRewardCommands(place).forEach(reward -> {
             reward = reward.replace("%player%", player.getName()).replace("%reward%", Long.toString(this.getReward()));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward);
         });
 
-        this.onFinish();
+        if (place == 3) {
+            this.onFinish();
+        }
+
     }
 
     public void onFailure() {
-        String message = this.main.getConfig().getString("Language.Failure");
-        if (message == null) {
-            message = "&eGames &8» &7Nobody typed the word in time!";
-        }
+        String message = getFailureMessage();
 
         message = message.replace("%word%", this.getWord());
         message = ChatColor.translateAlternateColorCodes('&', message);
@@ -108,7 +120,25 @@ public abstract class ChatGame {
         this.onFinish();
     }
 
+    public String setPlaceholders(String string) {
+        int i = 1;
+        for (UUID uuid : playersWon.keySet()) {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+
+            String name = player.getName();
+            name = name == null ? "Unknown" : name;
+
+            string = string.replace("%" + i + "_name%", name)
+                    .replace("%" + i + "_time%", String.valueOf(playersWon.get(uuid)));
+            i++;
+        }
+
+        return string;
+    }
+
     private void onFinish() {
+        playersWon.clear();
         this.main.startNewGame();
     }
+
 }

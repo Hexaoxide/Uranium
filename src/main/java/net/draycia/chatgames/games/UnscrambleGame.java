@@ -65,4 +65,10 @@ public class UnscrambleGame extends ChatGame {
     public long getReward() {
         return this.reward;
     }
+
+    @Override
+    List<String> getRewardCommands(int place) {
+        return getConfig().getGameConfig(GameType.UNSCRAMBLE).getCommandRewards(place);
+    }
+
 }

@@ -18,11 +18,11 @@ public enum MessageKey {
         this.defaultMessage = defaultMessage;
     }
 
-    public String getDefaultMessage() {
-        return defaultMessage;
+    public MessageList getDefaultMessage() {
+        return new MessageList(defaultMessage);
     }
 
-    public static Map<MessageKey, String> getDefaultMessages() {
+    public static Map<MessageKey, MessageList> getDefaultMessages() {
         return Arrays.stream(values()).collect(Collectors.toMap(m -> m, MessageKey::getDefaultMessage));
     }
 

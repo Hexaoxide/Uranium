@@ -2,7 +2,10 @@ package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
 
+import java.util.List;
+
 public class HoverGame extends ChatGame {
+
     private String word;
     private long startTime;
     private long reward;
@@ -42,4 +45,10 @@ public class HoverGame extends ChatGame {
     long getReward() {
         return this.reward;
     }
+
+    @Override
+    List<String> getRewardCommands(int place) {
+        return getConfig().getGameConfig(GameType.HOVER).getCommandRewards(place);
+    }
+
 }
