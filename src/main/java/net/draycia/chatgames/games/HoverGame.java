@@ -1,6 +1,7 @@
 package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
+import net.draycia.chatgames.util.MessageKey;
 
 import java.util.List;
 
@@ -9,11 +10,9 @@ public class HoverGame extends ChatGame {
     private String word;
     private long startTime;
     private long reward;
-    private ChatGames main;
 
     public HoverGame(ChatGames main) {
         super(main);
-        this.main = main;
         this.startTime = System.currentTimeMillis();
         this.word = this.getRandomWord();
         if (main.getConfig().getBoolean("StaticRewards")) {
@@ -22,7 +21,7 @@ public class HoverGame extends ChatGame {
             this.reward = main.getConfig().getLong("RewardPerCharacter") * (long) this.getWord().length();
         }
 
-        String message = main.getConfig().getString("Language.TypeStart");
+        String message = getConfig().getMessage(MessageKey.TYPE_START).get();
         if (message == null) {
             message = "&eGames &8» &aHover and type the word shown!";
         }

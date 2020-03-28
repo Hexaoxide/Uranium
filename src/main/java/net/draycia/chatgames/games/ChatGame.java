@@ -32,6 +32,10 @@ public abstract class ChatGame {
         this.playersWon = new HashMap<>();
     }
 
+    public ChatGames getPlugin() {
+        return main;
+    }
+
     public Config getConfig() {
         return config;
     }
