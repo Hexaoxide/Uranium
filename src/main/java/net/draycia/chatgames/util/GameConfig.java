@@ -1,17 +1,14 @@
 package net.draycia.chatgames.util;
 
-import ninja.leaping.configurate.objectmapping.Setting;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@ConfigSerializable
 public class GameConfig {
 
-    @Setting(value = "command-rewards", comment = "Commands that will be execute when player wins the game")
+    private String supplementaryFile = "words.txt";
+
     private Map<Integer, List<String>> commandRewards = new LinkedHashMap<>();
     {
         commandRewards.put(1, Arrays.asList("eco give %player% 1500",
@@ -22,8 +19,27 @@ public class GameConfig {
                 "broadcast &7%player% won the game in %time% finishing %place%"));
     }
 
+    public GameConfig() {
+    }
+
+    public GameConfig(String supplementaryFile, Map<Integer, List<String>> commandRewards) {
+        this.supplementaryFile = supplementaryFile;
+        this.commandRewards = commandRewards;
+    }
+
+    public GameConfig(String supplementaryFile) {
+        this.supplementaryFile = supplementaryFile;
+    }
+
+    public String getSupplementaryFile() {
+        return supplementaryFile;
+    }
+
     public List<String> getCommandRewards(int place) {
         return commandRewards.get(place);
     }
 
+    public Map<Integer, List<String>> getAllCommandRewards() {
+        return commandRewards;
+    }
 }

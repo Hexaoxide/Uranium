@@ -2,6 +2,7 @@ package net.draycia.chatgames.games;
 
 import com.google.common.primitives.Chars;
 import net.draycia.chatgames.ChatGames;
+import net.draycia.chatgames.util.GameConfig;
 import net.draycia.chatgames.util.MessageKey;
 
 import java.util.Collections;
@@ -11,14 +12,12 @@ public class UnscrambleGame extends ChatGame {
 
     private String word;
     private String displayWord;
-    private long startTime;
     private long reward;
 
     public UnscrambleGame(ChatGames main) {
         super(main);
-        this.startTime = System.currentTimeMillis();
         this.word = super.getRandomWord();
-        this.displayWord = this.scrambleWord(this.getWord());
+        this.displayWord = this.scrambleWord(this.getAnswer());
 
         String message = getConfig().getMessage(MessageKey.UNSCRAMBLE_START).get(0);
         if (message == null) {
@@ -28,16 +27,12 @@ public class UnscrambleGame extends ChatGame {
         super.onStart(message);
     }
 
-    public String getWord() {
+    public String getAnswer() {
         return this.word;
     }
 
-    public String getDisplayWord() {
+    public String getDisplayText() {
         return this.displayWord;
-    }
-
-    public long getStartTime() {
-        return this.startTime;
     }
 
     private String scrambleWord(String word) {
@@ -59,6 +54,11 @@ public class UnscrambleGame extends ChatGame {
 
     public long getReward() {
         return this.reward;
+    }
+
+    @Override
+    GameConfig getGameConfig() {
+        return getConfig().getGameConfig(GameType.UNSCRAMBLE);
     }
 
     @Override

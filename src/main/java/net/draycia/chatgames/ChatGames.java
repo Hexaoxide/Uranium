@@ -1,9 +1,14 @@
 package net.draycia.chatgames;
 
+import com.google.common.reflect.TypeToken;
+import net.draycia.chatgames.games.GameManager;
 import net.draycia.chatgames.util.Config;
+import net.draycia.chatgames.util.GameConfig;
+import net.draycia.chatgames.util.GameConfigSerializer;
 import ninja.leaping.configurate.SimpleConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +27,8 @@ public final class ChatGames extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.saveResource("words.txt", false);
+        saveResource("words.txt", false);
+        saveResource("problems.txt", false);
 
         try {
             config = loadSettings();
@@ -61,6 +67,8 @@ public final class ChatGames extends JavaPlugin {
         }
 
         File cfgFile = new File(getDataFolder().getAbsoluteFile(), "config.yml");
+
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(GameConfig.class), new GameConfigSerializer());
 
         ObjectMapper<Config>.BoundInstance instance = ObjectMapper.forClass(Config.class).bindToNew();
         YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder()

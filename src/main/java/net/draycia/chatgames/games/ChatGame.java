@@ -1,8 +1,8 @@
 package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.GameManager;
 import net.draycia.chatgames.util.Config;
+import net.draycia.chatgames.util.GameConfig;
 import net.draycia.chatgames.util.MessageKey;
 import net.kyori.text.TextComponent;
 import net.kyori.text.adapter.bukkit.TextAdapter;
@@ -27,6 +27,7 @@ public abstract class ChatGame {
 
     //UUID, time in which player solved the challenge
     private final Map<UUID, Double> playersWon;
+    private final long startTime;
 
     private boolean finished;
 
@@ -35,6 +36,7 @@ public abstract class ChatGame {
         this.config = main.getSettings(); //Once again multiple names for config
         this.gameManager = main.getGameManager();
         this.playersWon = new LinkedHashMap<>(); //Insertion order is important for us unless we sort by time
+        this.startTime = System.currentTimeMillis();
     }
 
     public ChatGames getPlugin() {
@@ -45,13 +47,17 @@ public abstract class ChatGame {
         return config;
     }
 
-    public abstract String getWord();
+    public abstract String getAnswer();
 
-    public abstract String getDisplayWord();
+    public abstract String getDisplayText();
 
-    abstract long getStartTime();
+    public long getStartTime() {
+        return startTime;
+    }
 
     abstract long getReward();
+
+    abstract GameConfig getGameConfig();
 
     abstract List<String> getRewardCommands(int place);
 
@@ -70,7 +76,11 @@ public abstract class ChatGame {
     }
 
     String getRandomWord() {
-        File words = new File(this.main.getDataFolder(), "words.txt");
+        return getRandomLine("pizza");
+    }
+
+    String getRandomLine(String def) {
+        File words = new File(this.main.getDataFolder(), getGameConfig().getSupplementaryFile());
 
         try {
             RandomAccessFile file = new RandomAccessFile(words, "r");
@@ -85,13 +95,13 @@ public abstract class ChatGame {
             return line;
         } catch (IOException e) {
             e.printStackTrace();
-            return "pizza";
+            return def;
         }
     }
 
     public void onStart(String message) {
         message = ChatColor.translateAlternateColorCodes('&', message);
-        TextComponent component = LegacyComponentSerializer.INSTANCE.deserialize(message).hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TextComponent.of(this.getDisplayWord())));
+        TextComponent component = LegacyComponentSerializer.INSTANCE.deserialize(message).hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TextComponent.of(this.getDisplayText())));
         TextAdapter.sendComponent(Bukkit.getOnlinePlayers(), component);
     }
 
@@ -107,7 +117,7 @@ public abstract class ChatGame {
         message = message.replace("%name%", player.getName())
                 .replace("%seconds%", time)
                 .replace("%time%", time)
-                .replace("%word%", this.getWord());
+                .replace("%word%", this.getAnswer());
         message = setPlaceholders(message);
         message = ChatColor.translateAlternateColorCodes('&', message);
 
@@ -137,7 +147,7 @@ public abstract class ChatGame {
             message = getFailureMessage();
         }
 
-        message = message.replace("%word%", this.getWord());
+        message = message.replace("%word%", this.getAnswer());
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         String finalMessage = message;

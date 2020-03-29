@@ -1,7 +1,6 @@
-package net.draycia.chatgames;
+package net.draycia.chatgames.games;
 
-import net.draycia.chatgames.games.ChatGame;
-import net.draycia.chatgames.games.HoverGame;
+import net.draycia.chatgames.ChatGames;
 import net.draycia.chatgames.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -28,7 +27,7 @@ public class GameManager implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         if (this.chatGame != null && !this.lock) {
-            if (event.getMessage().equalsIgnoreCase(this.chatGame.getWord())) {
+            if (event.getMessage().equalsIgnoreCase(this.chatGame.getAnswer())) {
                 this.lock = true;
                 event.setCancelled(true);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -61,9 +60,16 @@ public class GameManager implements Listener {
     }
 
     public ChatGame getRandomGame() {
-        //chosen by a fair dice roll.
-        //guaranteed to be random.
-        return new HoverGame(plugin);
+        switch (random.nextInt(4)) {
+            case 0:
+                return new HangmanGame(plugin);
+            case 1:
+                return new MathGame(plugin);
+            case 2:
+                return new HoverGame(plugin);
+            default:
+                return new UnscrambleGame(plugin);
+        }
     }
 
 }
