@@ -65,6 +65,10 @@ public abstract class ChatGame {
         return "&eGames &8» &7Nobody typed the word in time!";
     }
 
+    public String getIncompleteMessage() {
+        return config.getMessage(MessageKey.TYPE_INCOMPLETE).get(0);
+    }
+
     String getRandomWord() {
         File words = new File(this.main.getDataFolder(), "words.txt");
 
@@ -125,7 +129,13 @@ public abstract class ChatGame {
     }
 
     public void onFailure() {
-        String message = getFailureMessage();
+
+        String message;
+        if (hasAnyWins()) {
+            message = setPlaceholders(getIncompleteMessage());
+        } else {
+            message = getFailureMessage();
+        }
 
         message = message.replace("%word%", this.getWord());
         message = ChatColor.translateAlternateColorCodes('&', message);
@@ -137,19 +147,24 @@ public abstract class ChatGame {
     }
 
     public String setPlaceholders(String string) {
-        int i = 1;
-        for (UUID uuid : playersWon.keySet()) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+
+        String format = config.getMessage(MessageKey.WINNERS_FORMAT).get(0);
+        String sep = config.getMessage(MessageKey.WINNERS_SEPARATOR).get(0);
+
+        List<String> winnerEntries = new ArrayList<>();
+
+        for (Map.Entry<UUID, Double> en : playersWon.entrySet()) {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(en.getKey());
 
             String name = player.getName();
             name = name == null ? "Unknown" : name;
 
-            string = string.replace("%" + i + "_name%", name)
-                    .replace("%" + i + "_time%", String.valueOf(playersWon.get(uuid)));
-            i++;
+            String time = main.getDecimalFormat().format(en.getValue());
+
+            winnerEntries.add(format.replace("%name%", name).replace("%time%", time));
         }
 
-        return string;
+        return string.replace("%winners%", String.join(sep, winnerEntries));
     }
 
     public boolean isFinished() {
@@ -158,6 +173,10 @@ public abstract class ChatGame {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public boolean hasAnyWins() {
+        return playersWon.size() > 0;
     }
 
     private void onFinish() {
