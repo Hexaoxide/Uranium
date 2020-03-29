@@ -23,7 +23,7 @@ public class GameConfig {
     }
 
     public List<String> getCommandRewards(int place) {
-        return commandRewards.get(place - 1);
+        return commandRewards.get(place);
     }
 
 }

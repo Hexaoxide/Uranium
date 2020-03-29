@@ -29,7 +29,7 @@ public abstract class ChatGame {
     ChatGame(ChatGames main) {
         this.main = main;
         this.config = main.getSettings(); //Once again multiple names for config
-        this.playersWon = new HashMap<>();
+        this.playersWon = new LinkedHashMap<>(); //Insertion order is important for us unless we sort by time
     }
 
     public ChatGames getPlugin() {
@@ -51,7 +51,8 @@ public abstract class ChatGame {
     abstract List<String> getRewardCommands(int place);
 
     public String getSuccessMessage(int place) {
-        return config.getMessage(MessageKey.TYPE_SUCCESS).get(place);
+        List<String> messages = config.getMessage(MessageKey.TYPE_SUCCESS);
+        return messages.get(messages.size() > 1 ? place - 1 : 0);
         //return "&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!";
     }
 
@@ -91,9 +92,12 @@ public abstract class ChatGame {
         playersWon.put(player.getUniqueId(), duration);
         int place = playersWon.size();
 
+        String time = this.main.getDecimalFormat().format(duration);
+
         String message = getSuccessMessage(place);
         message = message.replace("%name%", player.getName())
-                .replace("%seconds%", this.main.getDecimalFormat().format(duration))
+                .replace("%seconds%", time)
+                .replace("%time%", time)
                 .replace("%word%", this.getWord());
         message = setPlaceholders(message);
         message = ChatColor.translateAlternateColorCodes('&', message);
@@ -102,7 +106,10 @@ public abstract class ChatGame {
         Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(finalMessage));
 
         getRewardCommands(place).forEach(reward -> {
-            reward = reward.replace("%player%", player.getName()).replace("%reward%", Long.toString(this.getReward()));
+            reward = reward.replace("%player%", player.getName())
+                    .replace("%reward%", Long.toString(this.getReward()))
+                    .replace("%time%", time)
+                    .replace("%place%", Integer.toString(place));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward);
         });
 

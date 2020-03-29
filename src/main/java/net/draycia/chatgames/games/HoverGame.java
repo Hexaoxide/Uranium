@@ -15,13 +15,8 @@ public class HoverGame extends ChatGame {
         super(main);
         this.startTime = System.currentTimeMillis();
         this.word = this.getRandomWord();
-        if (main.getConfig().getBoolean("StaticRewards")) {
-            this.reward = main.getConfig().getLong("RewardPerWin");
-        } else {
-            this.reward = main.getConfig().getLong("RewardPerCharacter") * (long) this.getWord().length();
-        }
 
-        String message = getConfig().getMessage(MessageKey.TYPE_START).get();
+        String message = getConfig().getMessage(MessageKey.TYPE_START).get(0);
         if (message == null) {
             message = "&eGames &8» &aHover and type the word shown!";
         }
