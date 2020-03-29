@@ -6,7 +6,6 @@ import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.DumperOptions;
 
@@ -32,7 +31,7 @@ public final class ChatGames extends JavaPlugin {
             getLogger().log(Level.SEVERE, "Failed to load config. Check logs.");
         }
 
-        GameManager gameManager = new GameManager(this);
+        gameManager = new GameManager(this);
         getServer().getPluginManager().registerEvents(gameManager, this);
         gameManager.startNewGame();
     }

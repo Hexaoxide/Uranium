@@ -9,7 +9,11 @@ public enum MessageKey {
     TYPE_START("&eGames &8» &aHover and type the word shown!"),
     UNSCRAMBLE_START("&eGames &8» &aHover and unscramble the word shown!"),
     TYPE_SUCCESS("&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!"),
-    UNSCRAMBLE_SUCCESS("&eGames &8» &a%name% &6has unscrambled %word% in %seconds% seconds!");
+    UNSCRAMBLE_SUCCESS("&eGames &8» &a%name% &6has unscrambled %word% in %seconds% seconds!"),
+    TYPE_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
+    UNSCRAMBLE_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
+    WINNERS_FORMAT("&e%name%&7(&a%time%&7)"),
+    WINNERS_SEPARATOR(", ");
 
     private final String defaultMessage;
 
