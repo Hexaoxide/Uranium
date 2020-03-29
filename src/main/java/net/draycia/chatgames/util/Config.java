@@ -6,6 +6,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class Config {
             .collect(Collectors.toMap(t -> t, t -> new GameConfig(), (e1, e2) -> e1, LinkedHashMap::new));
 
     @Setting
-    private Map<MessageKey, MessageList> language = MessageKey.getDefaultMessages();
+    private Map<MessageKey, List<String>> language = MessageKey.getDefaultMessages();
 
     public int getTimeBetweenGames() {
         return timeBetweenGames;
@@ -40,7 +41,7 @@ public class Config {
         return cancelWinningMessages;
     }
 
-    public MessageList getMessage(MessageKey key) {
+    public List<String> getMessage(MessageKey key) {
         return language.get(key); //Maybe getOrDefault(..., key.getDefaultMessage()) would be better? Not sure
     }
 

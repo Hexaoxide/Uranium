@@ -1,7 +1,6 @@
 package net.draycia.chatgames.util;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public enum MessageKey {
@@ -18,11 +17,11 @@ public enum MessageKey {
         this.defaultMessage = defaultMessage;
     }
 
-    public MessageList getDefaultMessage() {
-        return new MessageList(defaultMessage);
+    public List<String> getDefaultMessage() {
+        return Collections.singletonList(defaultMessage);
     }
 
-    public static Map<MessageKey, MessageList> getDefaultMessages() {
+    public static Map<MessageKey, List<String>> getDefaultMessages() {
         return Arrays.stream(values()).collect(Collectors.toMap(m -> m, MessageKey::getDefaultMessage));
     }
 

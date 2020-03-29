@@ -1,20 +1,19 @@
 package net.draycia.chatgames;
 
-import com.typesafe.config.ConfigRenderOptions;
 import net.draycia.chatgames.games.ChatGame;
 import net.draycia.chatgames.games.HoverGame;
 import net.draycia.chatgames.games.UnscrambleGame;
 import net.draycia.chatgames.util.Config;
-import ninja.leaping.configurate.commented.SimpleCommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.SimpleConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.apache.commons.lang.NotImplementedException;
+import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,10 +32,7 @@ public final class ChatGames extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        this.saveDefaultConfig();
         this.saveResource("words.txt", false);
-        this.getServer().getPluginManager().registerEvents(this, this);
-        this.startNewGame();
 
         try {
             config = loadSettings();
@@ -44,6 +40,9 @@ public final class ChatGames extends JavaPlugin implements Listener {
             e.printStackTrace();
             getLogger().log(Level.SEVERE, "Failed to load config. Check logs.");
         }
+
+        this.getServer().getPluginManager().registerEvents(this, this);
+        this.startNewGame();
     }
 
     @Override
@@ -85,8 +84,8 @@ public final class ChatGames extends JavaPlugin implements Listener {
                     this.chatGame = null;
                 }
 
-            }, this.getConfig().getInt("AutoEndTime") * 20);
-        }, this.getConfig().getLong("TimeBetweenGames") * 20L);
+            }, config.getAutoEndTime() * 20);
+        }, config.getTimeBetweenGames() * 20L);
     }
 
     public Config getSettings() { //getConfig clashes with method from JavaPlugin :( So maybe we should call it Settings too?
@@ -103,13 +102,13 @@ public final class ChatGames extends JavaPlugin implements Listener {
         File cfgFile = new File(getDataFolder().getAbsoluteFile(), "config.yml");
 
         ObjectMapper<Config>.BoundInstance instance = ObjectMapper.forClass(Config.class).bindToNew();
-        HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
+        YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder()
                 .setFile(cfgFile)
-                .setRenderOptions(ConfigRenderOptions.defaults().setFormatted(true).setComments(true))
+                .setFlowStyle(DumperOptions.FlowStyle.BLOCK)
                 .build();
 
         //Pretty sure I'm doing this part wrong
-        SimpleCommentedConfigurationNode node = SimpleCommentedConfigurationNode.root();
+        SimpleConfigurationNode node = SimpleConfigurationNode.root();
         if (!cfgFile.exists()) {
             instance.serialize(node);
             loader.save(node);

@@ -19,13 +19,8 @@ public class UnscrambleGame extends ChatGame {
         this.startTime = System.currentTimeMillis();
         this.word = super.getRandomWord();
         this.displayWord = this.scrambleWord(this.getWord());
-        if (main.getConfig().getBoolean("StaticRewards")) {
-            this.reward = main.getConfig().getLong("RewardPerWin");
-        } else {
-            this.reward = main.getConfig().getLong("RewardPerCharacter") * (long) this.getWord().length();
-        }
 
-        String message = getConfig().getMessage(MessageKey.UNSCRAMBLE_START).get();
+        String message = getConfig().getMessage(MessageKey.UNSCRAMBLE_START).get(0);
         if (message == null) {
             message = "&eGames &8» &aHover and unscramble the word shown!";
         }
