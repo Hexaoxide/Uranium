@@ -1,7 +1,7 @@
 package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.GameManager;
+import net.draycia.chatgames.util.GameConfig;
 import net.draycia.chatgames.util.MessageKey;
 
 import java.util.List;
@@ -9,12 +9,10 @@ import java.util.List;
 public class HoverGame extends ChatGame {
 
     private String word;
-    private long startTime;
     private long reward;
 
     public HoverGame(ChatGames main) {
         super(main);
-        this.startTime = System.currentTimeMillis();
         this.word = this.getRandomWord();
 
         String message = getConfig().getMessage(MessageKey.TYPE_START).get(0);
@@ -25,20 +23,21 @@ public class HoverGame extends ChatGame {
         super.onStart(message);
     }
 
-    public String getWord() {
+    public String getAnswer() {
         return this.word;
     }
 
-    public String getDisplayWord() {
-        return this.getWord();
-    }
-
-    public long getStartTime() {
-        return this.startTime;
+    public String getDisplayText() {
+        return this.getAnswer();
     }
 
     long getReward() {
         return this.reward;
+    }
+
+    @Override
+    GameConfig getGameConfig() {
+        return getConfig().getGameConfig(GameType.HOVER);
     }
 
     @Override

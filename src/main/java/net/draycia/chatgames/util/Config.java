@@ -4,11 +4,9 @@ import net.draycia.chatgames.games.GameType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @ConfigSerializable
 public class Config {
@@ -23,8 +21,13 @@ public class Config {
     private boolean cancelWinningMessages = true;
 
     @Setting(value = "game-config")
-    private Map<GameType, GameConfig> gameConfig = Arrays.stream(GameType.values())
-            .collect(Collectors.toMap(t -> t, t -> new GameConfig(), (e1, e2) -> e1, LinkedHashMap::new));
+    private Map<GameType, GameConfig> gameConfig = new LinkedHashMap<>();
+    {
+        gameConfig.put(GameType.MATH, new GameConfig("problems.txt"));
+        gameConfig.put(GameType.HOVER, new GameConfig());
+        gameConfig.put(GameType.UNSCRAMBLE, new GameConfig());
+        gameConfig.put(GameType.HANGMAN, new HangmanConfig());
+    }
 
     @Setting
     private Map<MessageKey, List<String>> language = MessageKey.getDefaultMessages();
@@ -37,7 +40,7 @@ public class Config {
         return autoEndTime;
     }
 
-    public boolean isCancelWinningMessages() {
+    public boolean shouldCancelWinningMessages() {
         return cancelWinningMessages;
     }
 
