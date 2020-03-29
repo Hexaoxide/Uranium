@@ -1,6 +1,7 @@
 package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
+import net.draycia.chatgames.GameManager;
 import net.draycia.chatgames.util.Config;
 import net.draycia.chatgames.util.MessageKey;
 import net.kyori.text.TextComponent;
@@ -21,14 +22,18 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class ChatGame {
 
     private final ChatGames main;
+    private final GameManager gameManager;
     private final Config config;
 
     //UUID, time in which player solved the challenge
     private final Map<UUID, Double> playersWon;
 
+    private boolean finished;
+
     ChatGame(ChatGames main) {
         this.main = main;
         this.config = main.getSettings(); //Once again multiple names for config
+        this.gameManager = main.getGameManager();
         this.playersWon = new LinkedHashMap<>(); //Insertion order is important for us unless we sort by time
     }
 
@@ -147,9 +152,18 @@ public abstract class ChatGame {
         return string;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
     private void onFinish() {
         playersWon.clear();
-        this.main.startNewGame();
+        setFinished(true);
+        gameManager.startNewGame();
     }
 
 }

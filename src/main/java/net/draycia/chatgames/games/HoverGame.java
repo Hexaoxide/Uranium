@@ -1,6 +1,7 @@
 package net.draycia.chatgames.games;
 
 import net.draycia.chatgames.ChatGames;
+import net.draycia.chatgames.GameManager;
 import net.draycia.chatgames.util.MessageKey;
 
 import java.util.List;
