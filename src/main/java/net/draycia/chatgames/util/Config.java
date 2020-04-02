@@ -20,6 +20,9 @@ public class Config {
     @Setting(value = "cancel-winning-messages", comment = "Should messages that won the game be cancelled?")
     private boolean cancelWinningMessages = true;
 
+    @Setting(value = "database")
+    private DatabaseCredentials databaseCredentials = new DatabaseCredentials();
+
     @Setting(value = "game-config")
     private Map<GameType, GameConfig> gameConfig = new LinkedHashMap<>();
     {
@@ -46,6 +49,10 @@ public class Config {
 
     public List<String> getMessage(MessageKey key) {
         return language.get(key); //Maybe getOrDefault(..., key.getDefaultMessage()) would be better? Not sure
+    }
+
+    public DatabaseCredentials getDatabaseCredentials() {
+        return databaseCredentials;
     }
 
     public GameConfig getGameConfig(GameType type) {

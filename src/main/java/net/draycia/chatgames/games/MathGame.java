@@ -56,4 +56,9 @@ public class MathGame extends ChatGame {
         return getGameConfig().getCommandRewards(place);
     }
 
+    @Override
+    GameType getGameType() {
+        return GameType.MATH;
+    }
+
 }

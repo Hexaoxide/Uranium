@@ -2,6 +2,9 @@ package net.draycia.chatgames;
 
 import com.google.common.reflect.TypeToken;
 import net.draycia.chatgames.games.GameManager;
+import net.draycia.chatgames.hooks.Placeholders;
+import net.draycia.chatgames.storage.MysqlStorage;
+import net.draycia.chatgames.storage.Storage;
 import net.draycia.chatgames.util.Config;
 import net.draycia.chatgames.util.GameConfig;
 import net.draycia.chatgames.util.GameConfigSerializer;
@@ -16,10 +19,13 @@ import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 
 public final class ChatGames extends JavaPlugin {
+
+    private Storage storage;
 
     private GameManager gameManager;
     private Config config;
@@ -35,6 +41,20 @@ public final class ChatGames extends JavaPlugin {
         } catch (ObjectMappingException | IOException e) {
             e.printStackTrace();
             getLogger().log(Level.SEVERE, "Failed to load config. Check logs.");
+        }
+
+        try {
+            storage = new MysqlStorage(this);
+            getServer().getPluginManager().registerEvents((MysqlStorage) storage, this);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Database initialization failed! Check logs.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new Placeholders(this).register();
         }
 
         gameManager = new GameManager(this);
@@ -86,6 +106,10 @@ public final class ChatGames extends JavaPlugin {
         instance.populate(loader.load());
 
         return instance.getInstance();
+    }
+
+    public Storage getStorage() {
+        return storage;
     }
 
 }
