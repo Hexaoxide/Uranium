@@ -51,6 +51,11 @@ public class HangmanGame extends ChatGame {
         return getGameConfig().getCommandRewards(place);
     }
 
+    @Override
+    GameType getGameType() {
+        return GameType.HANGMAN;
+    }
+
     public String makeDashedWord(String word) {
         int dashCount = (int) Math.round(Math.max(word.length() * getGameConfig().getDashPercentage(), 1));
         dashCount = Math.min(word.length() - 1, dashCount);

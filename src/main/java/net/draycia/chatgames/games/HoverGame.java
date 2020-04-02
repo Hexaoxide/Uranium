@@ -45,4 +45,9 @@ public class HoverGame extends ChatGame {
         return getConfig().getGameConfig(GameType.HOVER).getCommandRewards(place);
     }
 
+    @Override
+    GameType getGameType() {
+        return GameType.HOVER;
+    }
+
 }

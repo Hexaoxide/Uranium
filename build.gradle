@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 }
 
@@ -21,6 +21,7 @@ shadowJar{
     minimize()
     relocate 'ninja.leaping.configurate', 'lv.mtm123.chatgames.ninja.leaping.configurate'
     relocate 'co.aikar.commands', 'lv.mtm123.chatgames.acf'
+    relocate 'co.aikar.idb', 'lv.mtm123.chatgames.idb'
 }
 
 build.dependsOn shadowJar
@@ -49,15 +50,21 @@ repositories {
         name = 'aikar'
         url = 'https://repo.aikar.co/content/groups/aikar/'
     }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.10.5'
     compile 'net.kyori:text-api:3.0.0'
     compile 'net.kyori:text-adapter-bukkit:3.0.3'
     compile 'org.spongepowered:configurate-yaml:3.7-SNAPSHOT'
     compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+    compile "com.zaxxer:HikariCP:2.4.1"
+    compile "co.aikar:idb-bukkit:1.0.0-SNAPSHOT"
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

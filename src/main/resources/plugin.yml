@@ -2,6 +2,6 @@ name: ChatGames
 version: @version@
 main: net.draycia.chatgames.ChatGames
 api-version: 1.13
-softdepend: [Vault]
+softdepend: [Vault, PlaceholderAPI]
 authors: [MTM123, Vicarious]
 description: Adds chat games

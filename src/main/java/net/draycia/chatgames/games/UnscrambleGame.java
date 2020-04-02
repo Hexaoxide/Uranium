@@ -66,4 +66,9 @@ public class UnscrambleGame extends ChatGame {
         return getConfig().getGameConfig(GameType.UNSCRAMBLE).getCommandRewards(place);
     }
 
+    @Override
+    GameType getGameType() {
+        return GameType.UNSCRAMBLE;
+    }
+
 }

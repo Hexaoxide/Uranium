@@ -61,6 +61,8 @@ public abstract class ChatGame {
 
     abstract List<String> getRewardCommands(int place);
 
+    abstract GameType getGameType();
+
     public String getSuccessMessage(int place) {
         List<String> messages = config.getMessage(MessageKey.TYPE_SUCCESS);
         return messages.get(messages.size() > 1 ? place - 1 : 0);
@@ -190,6 +192,13 @@ public abstract class ChatGame {
     }
 
     private void onFinish() {
+
+        int i = 0;
+        for (Map.Entry<UUID, Double> en : playersWon.entrySet()) {
+            main.getStorage().savePlayer(en.getKey(), getGameType(), en.getValue(), i == 0);
+            i++;
+        }
+
         playersWon.clear();
         setFinished(true);
         gameManager.startNewGame();
