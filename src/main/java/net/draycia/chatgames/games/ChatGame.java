@@ -63,12 +63,6 @@ public abstract class ChatGame {
 
     abstract GameType getGameType();
 
-    public String getSuccessMessage(int place) {
-        List<String> messages = config.getMessage(MessageKey.TYPE_SUCCESS);
-        return messages.get(messages.size() > 1 ? place - 1 : 0);
-        //return "&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!";
-    }
-
     public String getFailureMessage() {
         return config.getMessage(MessageKey.FAILURE).get(0);
     }
@@ -114,17 +108,6 @@ public abstract class ChatGame {
         int place = playersWon.size();
 
         String time = this.main.getDecimalFormat().format(duration);
-
-        String message = getSuccessMessage(place);
-        message = message.replace("%name%", player.getName())
-                .replace("%seconds%", time)
-                .replace("%time%", time)
-                .replace("%word%", this.getAnswer());
-        message = setPlaceholders(message);
-        message = ChatColor.translateAlternateColorCodes('&', message);
-
-        String finalMessage = message;
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(finalMessage));
 
         getRewardCommands(place).forEach(reward -> {
             reward = reward.replace("%player%", player.getName())
