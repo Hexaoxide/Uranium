@@ -10,8 +10,6 @@ public enum MessageKey {
     UNSCRAMBLE_START("&eGames &8» &aHover and unscramble the word shown!"),
     MATH_START("&eGames &8» &aHover and solve the math problem shown!"),
     HANGMAN_START("&eGames &8» &aHover and fill in the blanks in the word shown!"),
-    TYPE_SUCCESS("&eGames &8» &a%name% &6has typed %word% in %seconds% seconds!"),
-    UNSCRAMBLE_SUCCESS("&eGames &8» &a%name% &6has unscrambled %word% in %seconds% seconds!"),
     TYPE_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
     UNSCRAMBLE_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
     MATH_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
