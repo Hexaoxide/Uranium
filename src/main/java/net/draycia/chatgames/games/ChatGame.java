@@ -70,7 +70,7 @@ public abstract class ChatGame {
     }
 
     public String getFailureMessage() {
-        return "&eGames &8» &7Nobody typed the word in time!";
+        return config.getMessage(MessageKey.FAILURE).get(0);
     }
 
     public String getIncompleteMessage() {
