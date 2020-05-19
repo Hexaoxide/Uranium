@@ -103,6 +103,10 @@ public abstract class ChatGame {
 
     public void onSuccess(Player player) {
 
+        if (playersWon.containsKey(player.getUniqueId())) {
+            return;
+        }
+
         double duration = (double) (System.currentTimeMillis() - this.getStartTime()) / 1000.0D;
         playersWon.put(player.getUniqueId(), duration);
         int place = playersWon.size();
@@ -113,7 +117,7 @@ public abstract class ChatGame {
             reward = reward.replace("%player%", player.getName())
                     .replace("%reward%", Long.toString(this.getReward()))
                     .replace("%time%", time)
-                    .replace("%place%", Integer.toString(place));
+                    .replace("%place%", getPlaceFromNumeric(place));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward);
         });
 
@@ -185,6 +189,19 @@ public abstract class ChatGame {
         playersWon.clear();
         setFinished(true);
         gameManager.startNewGame();
+    }
+
+    private String getPlaceFromNumeric(int place) {
+        switch (place) {
+            case 1:
+                return "1st";
+            case 2:
+                return "2nd";
+            case 3:
+                return "3rd";
+            default:
+                return "";
+        }
     }
 
 }
