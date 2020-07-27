@@ -19,12 +19,7 @@ public class UnscrambleGame extends ChatGame {
         this.word = super.getRandomWord();
         this.displayWord = this.scrambleWord(this.getAnswer());
 
-        String message = getConfig().getMessage(MessageKey.UNSCRAMBLE_START).get(0);
-        if (message == null) {
-            message = "&eGames &8» &aHover and unscramble the word shown!";
-        }
-
-        super.onStart(message);
+        super.onStart(getConfig().getMessage(MessageKey.UNSCRAMBLE_START).get(0));
     }
 
     public String getAnswer() {

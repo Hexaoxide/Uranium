@@ -5,15 +5,15 @@ import java.util.stream.Collectors;
 
 public enum MessageKey {
 
-    FAILURE("&eGames &8» &7Nobody typed the word (%word%) in time!"),
-    TYPE_START("&eGames &8» &aHover and type the word shown!"),
-    UNSCRAMBLE_START("&eGames &8» &aHover and unscramble the word shown!"),
-    MATH_START("&eGames &8» &aHover and solve the math problem shown!"),
-    HANGMAN_START("&eGames &8» &aHover and fill in the blanks in the word shown!"),
-    TYPE_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
-    UNSCRAMBLE_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
-    MATH_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
-    HANGMAN_INCOMPLETE("&eGames &8» &aGame ended. Winners: %winners%"),
+    FAILURE("<yellow>Games <dark_gray>» <gray>Nobody typed the word (<word>) in time!"),
+    TYPE_START("<yellow>Games <dark_gray>» <green>Hover and type the word shown!"),
+    UNSCRAMBLE_START("<yellow>Games <dark_gray>» <green>Hover and unscramble the word shown!"),
+    MATH_START("<yellow>Games <dark_gray>» <green>Hover and solve the math problem shown!"),
+    HANGMAN_START("<yellow>Games <dark_gray>» <green>Hover and fill in the blanks in the word shown!"),
+    TYPE_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
+    UNSCRAMBLE_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
+    MATH_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
+    HANGMAN_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
     WINNERS_FORMAT("&e%name%&7(&a%time%&7)"),
     WINNERS_SEPARATOR(", ");
 

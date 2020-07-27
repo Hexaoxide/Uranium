@@ -18,12 +18,7 @@ public class HangmanGame extends ChatGame {
         word = getRandomWord();
         display = makeDashedWord(word);
 
-        String message = getConfig().getMessage(MessageKey.HANGMAN_START).get(0);
-        if (message == null) {
-            message = "&eGames &8» &aHover and fill in the blanks in the word shown!";
-        }
-
-        super.onStart(message);
+        super.onStart(getConfig().getMessage(MessageKey.HANGMAN_START).get(0));
     }
 
     @Override

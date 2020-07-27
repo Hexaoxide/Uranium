@@ -4,12 +4,10 @@ import net.draycia.chatgames.ChatGames;
 import net.draycia.chatgames.util.Config;
 import net.draycia.chatgames.util.GameConfig;
 import net.draycia.chatgames.util.MessageKey;
-import net.kyori.text.TextComponent;
-import net.kyori.text.adapter.bukkit.TextAdapter;
-import net.kyori.text.event.HoverEvent;
-import net.kyori.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -96,9 +94,13 @@ public abstract class ChatGame {
     }
 
     public void onStart(String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        TextComponent component = LegacyComponentSerializer.INSTANCE.deserialize(message).hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, TextComponent.of(this.getDisplayText())));
-        TextAdapter.sendComponent(Bukkit.getOnlinePlayers(), component);
+        Component component = MiniMessage.get().parse(message, "hover", this.getDisplayText());
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Audience audience = getPlugin().getAudiences().player(player);
+
+            audience.sendMessage(component);
+        }
     }
 
     public void onSuccess(Player player) {
@@ -124,7 +126,6 @@ public abstract class ChatGame {
         if (place == 3) {
             this.onFinish();
         }
-
     }
 
     public void onFailure() {
@@ -136,11 +137,13 @@ public abstract class ChatGame {
             message = getFailureMessage();
         }
 
-        message = message.replace("%word%", this.getAnswer());
-        message = ChatColor.translateAlternateColorCodes('&', message);
+        Component component = MiniMessage.get().parse(message, "word", this.getAnswer());
 
-        String finalMessage = message;
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(finalMessage));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Audience audience = getPlugin().getAudiences().player(player);
+
+            audience.sendMessage(component);
+        }
 
         this.onFinish();
     }
@@ -160,10 +163,10 @@ public abstract class ChatGame {
 
             String time = main.getDecimalFormat().format(en.getValue());
 
-            winnerEntries.add(format.replace("%name%", name).replace("%time%", time));
+            winnerEntries.add(format.replace("<name>", name).replace("<time>", time));
         }
 
-        return string.replace("%winners%", String.join(sep, winnerEntries));
+        return string.replace("<winners>", String.join(sep, winnerEntries));
     }
 
     public boolean isFinished() {

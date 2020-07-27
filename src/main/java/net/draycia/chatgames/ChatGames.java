@@ -8,10 +8,11 @@ import net.draycia.chatgames.storage.Storage;
 import net.draycia.chatgames.util.Config;
 import net.draycia.chatgames.util.GameConfig;
 import net.draycia.chatgames.util.GameConfigSerializer;
-import ninja.leaping.configurate.SimpleConfigurationNode;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,10 +30,13 @@ public final class ChatGames extends JavaPlugin {
 
     private GameManager gameManager;
     private Config config;
+    private BukkitAudiences audiences;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     @Override
     public void onEnable() {
+        audiences = BukkitAudiences.create(this);
+
         saveResource("words.txt", false);
         saveResource("problems.txt", false);
 
@@ -88,7 +92,7 @@ public final class ChatGames extends JavaPlugin {
 
         File cfgFile = new File(getDataFolder().getAbsoluteFile(), "config.yml");
 
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(GameConfig.class), new GameConfigSerializer());
+        TypeSerializerCollection.defaults().register(TypeToken.of(GameConfig.class), new GameConfigSerializer());
 
         ObjectMapper<Config>.BoundInstance instance = ObjectMapper.forClass(Config.class).bindToNew();
         YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder()
@@ -97,7 +101,7 @@ public final class ChatGames extends JavaPlugin {
                 .build();
 
         //Pretty sure I'm doing this part wrong
-        SimpleConfigurationNode node = SimpleConfigurationNode.root();
+        ConfigurationNode node = ConfigurationNode.root();
         if (!cfgFile.exists()) {
             instance.serialize(node);
             loader.save(node);
@@ -112,4 +116,7 @@ public final class ChatGames extends JavaPlugin {
         return storage;
     }
 
+    public BukkitAudiences getAudiences() {
+        return audiences;
+    }
 }

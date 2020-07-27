@@ -15,6 +15,7 @@ public class MathGame extends ChatGame {
         super(main);
 
         String[] in = getRandomLine("3+3*2").split("\\s*:\\s*");
+
         if (in.length < 2) {
             throw new RuntimeException("Incorrect math problem format! It should be formatted in this format: 'problem: solution'");
         }
@@ -22,12 +23,7 @@ public class MathGame extends ChatGame {
         problem = in[0];
         solution = in[1];
 
-        String message = getConfig().getMessage(MessageKey.MATH_START).get(0);
-        if (message == null) {
-            message = "&eGames &8» &aHover and solve the math problem shown!";
-        }
-
-        super.onStart(message);
+        super.onStart(getConfig().getMessage(MessageKey.MATH_START).get(0));
     }
 
     @Override
