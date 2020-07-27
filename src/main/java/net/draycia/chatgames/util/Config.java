@@ -35,6 +35,12 @@ public class Config {
     @Setting
     private Map<MessageKey, List<String>> language = MessageKey.getDefaultMessages();
 
+    @Setting(value = "require-player-count", comment = "If games should be skipped if the minimum-players isn't met or exceeded")
+    private boolean skipIfNotEnoughPlayers = false;
+
+    @Setting(value = "minimum-players", comment = "The minimum amount of players required for games to start")
+    private int minimumPlayers = 1;
+
     public int getTimeBetweenGames() {
         return timeBetweenGames;
     }
@@ -45,6 +51,14 @@ public class Config {
 
     public boolean shouldCancelWinningMessages() {
         return cancelWinningMessages;
+    }
+
+    public boolean skipIfNotEnoughPlayers() {
+        return skipIfNotEnoughPlayers;
+    }
+
+    public int getMinimumPlayers() {
+        return minimumPlayers;
     }
 
     public List<String> getMessage(MessageKey key) {

@@ -44,19 +44,25 @@ public class GameManager implements Listener {
     }
 
     public void startNewGame() {
-        Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
-            this.chatGame = getRandomGame();
+        if (config.skipIfNotEnoughPlayers() && Bukkit.getOnlinePlayers().size() < config.getMinimumPlayers()) {
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, this::startNewGame,
+                    config.getTimeBetweenGames() * 20L);
+        } else {
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+                this.chatGame = getRandomGame();
 
-            //Ehh a bit ugly but I guess this works?
-            autoEndTask = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                if (this.chatGame != null) {
-                    this.chatGame.onFailure();
-                    this.chatGame = null;
-                    autoEndTask = -1;
-                }
+                //Ehh a bit ugly but I guess this works?
+                autoEndTask = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    if (this.chatGame != null) {
+                        this.chatGame.onFailure();
+                        this.chatGame = null;
+                        autoEndTask = -1;
+                    }
 
-            }, config.getAutoEndTime() * 20);
-        }, config.getTimeBetweenGames() * 20L);
+                }, config.getAutoEndTime() * 20);
+            }, config.getTimeBetweenGames() * 20L);
+
+        }
     }
 
     public ChatGame getRandomGame() {
