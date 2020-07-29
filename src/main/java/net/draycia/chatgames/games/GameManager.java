@@ -17,7 +17,6 @@ public class GameManager implements Listener {
 
     private ChatGame chatGame = null;
     private int autoEndTask;
-    private boolean lock = false;
 
     public GameManager(ChatGames plugin) {
         this.plugin = plugin;
@@ -26,9 +25,8 @@ public class GameManager implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        if (this.chatGame != null && !this.lock) {
+        if (this.chatGame != null) {
             if (event.getMessage().equalsIgnoreCase(this.chatGame.getAnswer())) {
-                this.lock = true;
                 event.setCancelled(true);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                     this.chatGame.onSuccess(event.getPlayer());
@@ -36,7 +34,6 @@ public class GameManager implements Listener {
                         this.chatGame = null;
                         Bukkit.getScheduler().cancelTask(autoEndTask);
                     }
-                    this.lock = false;
                 });
             }
 
