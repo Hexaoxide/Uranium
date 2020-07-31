@@ -1,4 +1,4 @@
-package net.draycia.chatgames.util;
+package net.draycia.uranium.util;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;

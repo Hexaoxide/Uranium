@@ -1,6 +1,6 @@
-name: ChatGames
+name: Uranium
 version: @version@
-main: net.draycia.chatgames.ChatGames
+main: net.draycia.uranium.Uranium
 api-version: 1.13
 softdepend: [Vault, PlaceholderAPI]
 authors: [MTM123, Vicarious]

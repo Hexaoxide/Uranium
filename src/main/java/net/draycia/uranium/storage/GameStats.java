@@ -1,4 +1,4 @@
-package net.draycia.chatgames.storage;
+package net.draycia.uranium.storage;
 
 public class GameStats {
 

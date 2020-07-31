@@ -1,9 +1,9 @@
-package net.draycia.chatgames.games;
+package net.draycia.uranium.games;
 
 import com.google.common.primitives.Chars;
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.util.GameConfig;
-import net.draycia.chatgames.util.MessageKey;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.util.GameConfig;
+import net.draycia.uranium.util.MessageKey;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +14,7 @@ public class UnscrambleGame extends ChatGame {
     private String displayWord;
     private long reward;
 
-    public UnscrambleGame(ChatGames main) {
+    public UnscrambleGame(Uranium main) {
         super(main);
         this.word = super.getRandomWord();
         this.displayWord = this.scrambleWord(this.getAnswer());

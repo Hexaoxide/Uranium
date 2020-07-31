@@ -1,18 +1,18 @@
-package net.draycia.chatgames.hooks;
+package net.draycia.uranium.hooks;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.games.GameType;
-import net.draycia.chatgames.storage.GameStats;
-import net.draycia.chatgames.storage.Storage;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.games.GameType;
+import net.draycia.uranium.storage.GameStats;
+import net.draycia.uranium.storage.Storage;
 import org.bukkit.entity.Player;
 
 public class Placeholders extends PlaceholderExpansion {
 
-    private final ChatGames plugin;
+    private final Uranium plugin;
     private final Storage storage;
 
-    public Placeholders(ChatGames plugin) {
+    public Placeholders(Uranium plugin) {
         this.plugin = plugin;
         this.storage = plugin.getStorage();
     }

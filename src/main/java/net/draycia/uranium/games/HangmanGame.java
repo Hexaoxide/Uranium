@@ -1,8 +1,8 @@
-package net.draycia.chatgames.games;
+package net.draycia.uranium.games;
 
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.util.HangmanConfig;
-import net.draycia.chatgames.util.MessageKey;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.util.HangmanConfig;
+import net.draycia.uranium.util.MessageKey;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,7 +12,7 @@ public class HangmanGame extends ChatGame {
     private final String display;
     private final String word;
 
-    HangmanGame(ChatGames main) {
+    HangmanGame(Uranium main) {
         super(main);
 
         word = getRandomWord();

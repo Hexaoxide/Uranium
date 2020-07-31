@@ -1,4 +1,4 @@
-package net.draycia.chatgames.util;
+package net.draycia.uranium.util;
 
 import java.util.*;
 import java.util.stream.Collectors;

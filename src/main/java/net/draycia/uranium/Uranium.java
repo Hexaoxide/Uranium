@@ -1,13 +1,13 @@
-package net.draycia.chatgames;
+package net.draycia.uranium;
 
 import com.google.common.reflect.TypeToken;
-import net.draycia.chatgames.games.GameManager;
-import net.draycia.chatgames.hooks.Placeholders;
-import net.draycia.chatgames.storage.MysqlStorage;
-import net.draycia.chatgames.storage.Storage;
-import net.draycia.chatgames.util.Config;
-import net.draycia.chatgames.util.GameConfig;
-import net.draycia.chatgames.util.GameConfigSerializer;
+import net.draycia.uranium.games.GameManager;
+import net.draycia.uranium.hooks.Placeholders;
+import net.draycia.uranium.storage.MysqlStorage;
+import net.draycia.uranium.storage.Storage;
+import net.draycia.uranium.util.Config;
+import net.draycia.uranium.util.GameConfig;
+import net.draycia.uranium.util.GameConfigSerializer;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 
-public final class ChatGames extends JavaPlugin {
+public final class Uranium extends JavaPlugin {
 
     private Storage storage;
 
@@ -92,6 +92,7 @@ public final class ChatGames extends JavaPlugin {
 
         File cfgFile = new File(getDataFolder().getAbsoluteFile(), "config.yml");
 
+        //noinspection UnstableApiUsage
         TypeSerializerCollection.defaults().register(TypeToken.of(GameConfig.class), new GameConfigSerializer());
 
         ObjectMapper<Config>.BoundInstance instance = ObjectMapper.forClass(Config.class).bindToNew();
@@ -100,7 +101,7 @@ public final class ChatGames extends JavaPlugin {
                 .setFlowStyle(DumperOptions.FlowStyle.BLOCK)
                 .build();
 
-        //Pretty sure I'm doing this part wrong
+        // Pretty sure I'm doing this part wrong
         ConfigurationNode node = ConfigurationNode.root();
         if (!cfgFile.exists()) {
             instance.serialize(node);

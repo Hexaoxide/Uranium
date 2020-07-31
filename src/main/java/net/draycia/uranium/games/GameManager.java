@@ -1,7 +1,7 @@
-package net.draycia.chatgames.games;
+package net.draycia.uranium.games;
 
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.util.Config;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,14 +11,14 @@ import java.util.Random;
 
 public class GameManager implements Listener {
 
-    private final ChatGames plugin;
+    private final Uranium plugin;
     private final Config config;
     private final Random random = new Random();
 
     private ChatGame chatGame = null;
     private int autoEndTask;
 
-    public GameManager(ChatGames plugin) {
+    public GameManager(Uranium plugin) {
         this.plugin = plugin;
         this.config = plugin.getSettings();
     }

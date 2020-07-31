@@ -1,6 +1,6 @@
-package net.draycia.chatgames.util;
+package net.draycia.uranium.util;
 
-import net.draycia.chatgames.games.GameType;
+import net.draycia.uranium.games.GameType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 

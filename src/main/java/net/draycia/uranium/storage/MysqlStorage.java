@@ -1,10 +1,10 @@
-package net.draycia.chatgames.storage;
+package net.draycia.uranium.storage;
 
 import co.aikar.idb.BukkitDB;
 import co.aikar.idb.DB;
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.games.GameType;
-import net.draycia.chatgames.util.DatabaseCredentials;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.games.GameType;
+import net.draycia.uranium.util.DatabaseCredentials;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,10 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MysqlStorage implements Storage, Listener {
 
-    private final ChatGames plugin;
+    private final Uranium plugin;
     private final Map<UUID, Map<GameType, GameStats>> playerData;
 
-    public MysqlStorage(ChatGames plugin) throws SQLException {
+    public MysqlStorage(Uranium plugin) throws SQLException {
         this.plugin = plugin;
         init();
         playerData = new ConcurrentHashMap<>();

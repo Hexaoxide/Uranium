@@ -1,4 +1,4 @@
-# ChatGames
+# Uranium
 
 ## Contributors
 [Draycia](https://github.com/Draycia) (Vicarious#0001) - Creator and primary maintainer  

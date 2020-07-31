@@ -1,4 +1,4 @@
-package net.draycia.chatgames.util;
+package net.draycia.uranium.util;
 
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;

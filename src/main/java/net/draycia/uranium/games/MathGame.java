@@ -1,8 +1,8 @@
-package net.draycia.chatgames.games;
+package net.draycia.uranium.games;
 
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.util.GameConfig;
-import net.draycia.chatgames.util.MessageKey;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.util.GameConfig;
+import net.draycia.uranium.util.MessageKey;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class MathGame extends ChatGame {
     private final String problem;
     private final String solution;
 
-    MathGame(ChatGames main) {
+    MathGame(Uranium main) {
         super(main);
 
         String[] in = getRandomLine("3+3*2").split("\\s*:\\s*");

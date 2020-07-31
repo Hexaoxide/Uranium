@@ -1,9 +1,9 @@
-package net.draycia.chatgames.games;
+package net.draycia.uranium.games;
 
-import net.draycia.chatgames.ChatGames;
-import net.draycia.chatgames.util.Config;
-import net.draycia.chatgames.util.GameConfig;
-import net.draycia.chatgames.util.MessageKey;
+import net.draycia.uranium.Uranium;
+import net.draycia.uranium.util.Config;
+import net.draycia.uranium.util.GameConfig;
+import net.draycia.uranium.util.MessageKey;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.Component;
@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class ChatGame {
 
-    private final ChatGames main;
+    private final Uranium main;
     private final GameManager gameManager;
     private final Config config;
 
@@ -29,7 +29,7 @@ public abstract class ChatGame {
 
     private boolean finished;
 
-    ChatGame(ChatGames main) {
+    ChatGame(Uranium main) {
         this.main = main;
         this.config = main.getSettings(); //Once again multiple names for config
         this.gameManager = main.getGameManager();
@@ -37,7 +37,7 @@ public abstract class ChatGame {
         this.startTime = System.currentTimeMillis();
     }
 
-    public ChatGames getPlugin() {
+    public Uranium getPlugin() {
         return main;
     }
 

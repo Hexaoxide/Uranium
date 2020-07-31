@@ -1,6 +1,6 @@
-package net.draycia.chatgames.storage;
+package net.draycia.uranium.storage;
 
-import net.draycia.chatgames.games.GameType;
+import net.draycia.uranium.games.GameType;
 
 import java.util.UUID;
 

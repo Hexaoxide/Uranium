@@ -1,4 +1,4 @@
-package net.draycia.chatgames.games;
+package net.draycia.uranium.games;
 
 public enum GameType {
 
