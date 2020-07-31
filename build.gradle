@@ -26,10 +26,14 @@ shadowJar{
 
 build.dependsOn shadowJar
 
-compileJava{
+compileJava {
     options.compilerArgs += ["-parameters"]
     options.fork = true
     options.forkOptions.executable = 'javac'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 repositories {
