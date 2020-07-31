@@ -12,11 +12,11 @@ public class GameConfig {
     private Map<Integer, List<String>> commandRewards = new LinkedHashMap<>();
     {
         commandRewards.put(1, Arrays.asList("eco give %player% 1500",
-                "broadcast &6%player% won the game in %time% finishing %place%"));
+                "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
         commandRewards.put(2, Arrays.asList("eco give %player% 1000",
-                "broadcast &a%player% won the game in %time% finishing %place%"));
+                "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
         commandRewards.put(3, Arrays.asList("eco give %player% 500",
-                "broadcast &7%player% won the game in %time% finishing %place%"));
+                "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
     }
 
     public GameConfig() {

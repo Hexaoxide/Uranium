@@ -94,8 +94,7 @@ public abstract class ChatGame {
     }
 
     public void onStart(String message) {
-        Component component = MiniMessage.get().parse(message, "hover", this.getDisplayText(),
-                "word", getDisplayText());
+        Component component = MiniMessage.get().parse(message.replace("<word>", getDisplayText()), "hover", this.getDisplayText());
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Audience audience = getPlugin().getAudiences().player(player);

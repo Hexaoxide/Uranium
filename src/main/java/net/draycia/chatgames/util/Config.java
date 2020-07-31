@@ -15,7 +15,7 @@ public class Config {
     private int timeBetweenGames = 300;
 
     @Setting(value = "auto-end-time", comment = "Time in seconds before the games will automatically end")
-    private int autoEndTime = 60;
+    private int autoEndTime = 30;
 
     @Setting(value = "cancel-winning-messages", comment = "Should messages that won the game be cancelled?")
     private boolean cancelWinningMessages = true;

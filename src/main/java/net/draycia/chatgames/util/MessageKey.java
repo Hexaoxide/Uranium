@@ -5,16 +5,16 @@ import java.util.stream.Collectors;
 
 public enum MessageKey {
 
-    FAILURE("<yellow>Games <dark_gray>» <gray>Nobody typed the word (<word>) in time!"),
-    TYPE_START("<yellow>Games <dark_gray>» <green>Hover and type the word shown!"),
-    UNSCRAMBLE_START("<yellow>Games <dark_gray>» <green>Hover and unscramble the word shown!"),
-    MATH_START("<yellow>Games <dark_gray>» <green>Hover and solve the math problem shown!"),
-    HANGMAN_START("<yellow>Games <dark_gray>» <green>Hover and fill in the blanks in the word shown!"),
-    TYPE_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
-    UNSCRAMBLE_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
-    MATH_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
-    HANGMAN_INCOMPLETE("<yellow>Games <dark_gray>» <green>Game ended. Winners: <winners>"),
-    WINNERS_FORMAT("&e%name%&7(&a%time%&7)"),
+    FAILURE("<green>Games <dark_gray>» <gray>Nobody typed <green><word><gray> in time!"),
+    TYPE_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and type the word!"),
+    UNSCRAMBLE_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and unscramble the word!"),
+    MATH_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and solve the math problem!"),
+    HANGMAN_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and fill in the blanks!"),
+    TYPE_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
+    UNSCRAMBLE_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
+    MATH_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
+    HANGMAN_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
+    WINNERS_FORMAT("<green><name><gray>[<green><time>s<gray>]"),
     WINNERS_SEPARATOR(", ");
 
     private final String defaultMessage;
