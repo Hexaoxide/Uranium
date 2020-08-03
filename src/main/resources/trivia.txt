@@ -1,2 +1,3 @@
 Who created Minecraft?:Notch
-What year was Minrecraft created?:2009
+What year was Minecraft created?:2009
+What year did 1.0 release?:2011

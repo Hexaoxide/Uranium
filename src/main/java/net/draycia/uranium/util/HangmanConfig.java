@@ -19,8 +19,8 @@ public class HangmanConfig extends GameConfig {
         this.dashPercentage = dashPercentage;
     }
 
-    public HangmanConfig(String supplementaryFile, Map<Integer, List<String>> commandRewards, double dashPercentage) {
-        super(supplementaryFile, commandRewards);
+    public HangmanConfig(String supplementaryFile, boolean isEnabled, Map<Integer, List<String>> commandRewards, double dashPercentage) {
+        super(supplementaryFile, isEnabled, commandRewards);
         this.dashPercentage = dashPercentage;
     }
 

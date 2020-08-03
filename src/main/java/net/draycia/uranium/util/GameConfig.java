@@ -10,6 +10,7 @@ public class GameConfig {
     private String supplementaryFile = "words.txt";
 
     private Map<Integer, List<String>> commandRewards = new LinkedHashMap<>();
+
     {
         commandRewards.put(1, Arrays.asList("eco give %player% 1500",
                 "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
@@ -19,12 +20,15 @@ public class GameConfig {
                 "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
     }
 
+    private boolean isEnabled = false;
+
     public GameConfig() {
     }
 
-    public GameConfig(String supplementaryFile, Map<Integer, List<String>> commandRewards) {
+    public GameConfig(String supplementaryFile, boolean isEnabled, Map<Integer, List<String>> commandRewards) {
         this.supplementaryFile = supplementaryFile;
         this.commandRewards = commandRewards;
+        this.isEnabled = isEnabled;
     }
 
     public GameConfig(String supplementaryFile) {
@@ -42,4 +46,9 @@ public class GameConfig {
     public Map<Integer, List<String>> getAllCommandRewards() {
         return commandRewards;
     }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
 }

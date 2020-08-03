@@ -7,6 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameManager implements Listener {
@@ -66,6 +69,37 @@ public class GameManager implements Listener {
     }
 
     public ChatGame getRandomGame() {
+        List<Class<? extends ChatGame>> games = new ArrayList<>();
+
+        if (config.getGameConfig(GameType.HANGMAN).isEnabled()) {
+            games.add(HangmanGame.class);
+        }
+
+        if (config.getGameConfig(GameType.HOVER).isEnabled()) {
+            games.add(HoverGame.class);
+        }
+
+        if (config.getGameConfig(GameType.MATH).isEnabled()) {
+            games.add(MathGame.class);
+        }
+
+        if (config.getGameConfig(GameType.TRIVIA).isEnabled()) {
+            games.add(TriviaGame.class);
+        }
+
+        if (config.getGameConfig(GameType.UNSCRAMBLE).isEnabled()) {
+            games.add(UnscrambleGame.class);
+        }
+
+        Class<? extends ChatGame> game = games.get(random.nextInt(games.size()));
+
+        try {
+            return game.getConstructor(Uranium.class).newInstance(plugin);
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+                InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
         switch (random.nextInt(5)) {
             case 0:
                 return new HangmanGame(plugin);
