@@ -7,6 +7,9 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class DatabaseCredentials {
 
     @Setting
+    private boolean isEnabled = false;
+
+    @Setting
     private String host = "localhost";
 
     @Setting
@@ -41,4 +44,7 @@ public class DatabaseCredentials {
         return password;
     }
 
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 }

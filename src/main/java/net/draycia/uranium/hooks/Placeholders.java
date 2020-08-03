@@ -44,6 +44,9 @@ public class Placeholders extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
+        if (storage == null) {
+            return "";
+        }
 
         if (player == null) {
             return "";
@@ -52,15 +55,15 @@ public class Placeholders extends PlaceholderExpansion {
         if (identifier.equals("total_wins")) {
             return String.valueOf(storage.getTotalWins(player.getUniqueId()));
         } else {
-
             GameType gameType = getGameType(identifier);
+
             if (gameType == null) {
                 return null;
             }
 
             GameStats stats = storage.getGameStats(player.getUniqueId(), gameType);
 
-            if(identifier.endsWith("wins")) {
+            if (identifier.endsWith("wins")) {
                 return String.valueOf(stats.getTimesWon());
             } else if (identifier.endsWith("record")) {
                 return stats.getRecordTime() == 0 ? "N/A" : String.valueOf(stats.getRecordTime());

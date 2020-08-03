@@ -26,7 +26,7 @@ import java.util.logging.Level;
 
 public final class Uranium extends JavaPlugin {
 
-    private Storage storage;
+    private Storage storage = null;
 
     private GameManager gameManager;
     private Config config;
@@ -48,14 +48,16 @@ public final class Uranium extends JavaPlugin {
             getLogger().log(Level.SEVERE, "Failed to load config. Check logs.");
         }
 
-        try {
-            storage = new MysqlStorage(this);
-            getServer().getPluginManager().registerEvents((MysqlStorage) storage, this);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            getLogger().log(Level.SEVERE, "Database initialization failed! Check logs.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+        if (config.getDatabaseCredentials().isEnabled()) {
+            try {
+                storage = new MysqlStorage(this);
+                getServer().getPluginManager().registerEvents((MysqlStorage) storage, this);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                getLogger().log(Level.SEVERE, "Database initialization failed! Check logs.");
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
         }
 
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {

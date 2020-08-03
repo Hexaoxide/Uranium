@@ -179,11 +179,13 @@ public abstract class ChatGame {
     }
 
     private void onFinish() {
+        if (config.getDatabaseCredentials().isEnabled()) {
+            int i = 0;
 
-        int i = 0;
-        for (Map.Entry<UUID, Double> en : playersWon.entrySet()) {
-            main.getStorage().savePlayer(en.getKey(), getGameType(), en.getValue(), i == 0);
-            i++;
+            for (Map.Entry<UUID, Double> en : playersWon.entrySet()) {
+                main.getStorage().savePlayer(en.getKey(), getGameType(), en.getValue(), i == 0);
+                i++;
+            }
         }
 
         playersWon.clear();
