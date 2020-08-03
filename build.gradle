@@ -32,6 +32,12 @@ tasks.withType(JavaCompile) {
 shadowJar {
     minimize()
     archiveClassifier.set("")
+    archiveFileName.set(project.name + ".jar")
+}
+
+jar {
+    archiveFileName.set(project.name + ".jar")
+
 }
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
