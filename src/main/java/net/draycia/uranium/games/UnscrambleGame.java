@@ -12,7 +12,6 @@ public class UnscrambleGame extends ChatGame {
 
     private String word;
     private String displayWord;
-    private long reward;
 
     public UnscrambleGame(Uranium main) {
         super(main);
@@ -45,10 +44,6 @@ public class UnscrambleGame extends ChatGame {
         }
 
         return shuffledWord;
-    }
-
-    public long getReward() {
-        return this.reward;
     }
 
     @Override

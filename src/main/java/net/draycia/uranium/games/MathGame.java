@@ -37,12 +37,6 @@ public class MathGame extends ChatGame {
     }
 
     @Override
-    long getReward() {
-        //unused
-        return 0;
-    }
-
-    @Override
     GameConfig getGameConfig() {
         return getConfig().getGameConfig(GameType.MATH);
     }

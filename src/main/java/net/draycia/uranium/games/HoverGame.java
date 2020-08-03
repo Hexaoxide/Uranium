@@ -9,7 +9,6 @@ import java.util.List;
 public class HoverGame extends ChatGame {
 
     private String word;
-    private long reward;
 
     public HoverGame(Uranium main) {
         super(main);
@@ -24,10 +23,6 @@ public class HoverGame extends ChatGame {
 
     public String getDisplayText() {
         return this.getAnswer();
-    }
-
-    long getReward() {
-        return this.reward;
     }
 
     @Override

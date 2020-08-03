@@ -53,8 +53,6 @@ public abstract class ChatGame {
         return startTime;
     }
 
-    abstract long getReward();
-
     abstract GameConfig getGameConfig();
 
     abstract List<String> getRewardCommands(int place);
@@ -117,7 +115,6 @@ public abstract class ChatGame {
 
         getRewardCommands(place).forEach(reward -> {
             reward = reward.replace("%player%", player.getName())
-                    .replace("%reward%", Long.toString(this.getReward()))
                     .replace("%time%", time)
                     .replace("%place%", getPlaceFromNumeric(place));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward);

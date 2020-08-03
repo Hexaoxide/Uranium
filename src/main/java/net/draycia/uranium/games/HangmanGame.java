@@ -32,11 +32,6 @@ public class HangmanGame extends ChatGame {
     }
 
     @Override
-    long getReward() {
-        return 0;
-    }
-
-    @Override
     HangmanConfig getGameConfig() {
         return (HangmanConfig) getConfig().getGameConfig(GameType.HANGMAN);
     }
