@@ -29,7 +29,7 @@ public class Placeholders extends PlaceholderExpansion {
 
     @Override
     public String getIdentifier() {
-        return "chatgames";
+        return "uranium";
     }
 
     @Override

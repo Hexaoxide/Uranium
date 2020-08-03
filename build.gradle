@@ -17,13 +17,6 @@ targetCompatibility = '1.8'
 
 apply plugin: "com.github.johnrengelman.shadow"
 
-shadowJar{
-    minimize()
-    relocate 'ninja.leaping.configurate', 'lv.mtm123.chatgames.ninja.leaping.configurate'
-    relocate 'co.aikar.commands', 'lv.mtm123.chatgames.acf'
-    relocate 'co.aikar.idb', 'lv.mtm123.chatgames.idb'
-}
-
 build.dependsOn shadowJar
 
 compileJava {
@@ -37,8 +30,18 @@ tasks.withType(JavaCompile) {
 }
 
 shadowJar {
+    minimize()
     archiveClassifier.set("")
 }
+
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "net.draycia.uranium.libs" // Default value is "shadow"
+}
+
+tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
 repositories {
     mavenCentral()

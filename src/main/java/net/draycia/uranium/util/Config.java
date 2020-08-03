@@ -30,6 +30,7 @@ public class Config {
         gameConfig.put(GameType.HOVER, new GameConfig());
         gameConfig.put(GameType.UNSCRAMBLE, new GameConfig());
         gameConfig.put(GameType.HANGMAN, new HangmanConfig());
+        gameConfig.put(GameType.TRIVIA, new GameConfig("trivia.txt"));
     }
 
     @Setting
