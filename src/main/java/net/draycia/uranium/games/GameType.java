@@ -5,6 +5,7 @@ public enum GameType {
     MATH,
     HOVER,
     UNSCRAMBLE,
-    HANGMAN
+    HANGMAN,
+    TRIVIA
 
 }

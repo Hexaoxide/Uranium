@@ -63,13 +63,15 @@ public class GameManager implements Listener {
     }
 
     public ChatGame getRandomGame() {
-        switch (random.nextInt(4)) {
+        switch (random.nextInt(5)) {
             case 0:
                 return new HangmanGame(plugin);
             case 1:
                 return new MathGame(plugin);
             case 2:
                 return new HoverGame(plugin);
+            case 3:
+                return new TriviaGame(plugin);
             default:
                 return new UnscrambleGame(plugin);
         }

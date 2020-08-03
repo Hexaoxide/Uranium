@@ -10,6 +10,7 @@ public enum MessageKey {
     UNSCRAMBLE_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and unscramble the word!"),
     MATH_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and solve the math problem!"),
     HANGMAN_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and fill in the blanks!"),
+    TRIVIA_START("<hover:show_text:'<white><word>'><green>Games <dark_gray>» <green>Hover and answer this trivia question!"),
     TYPE_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
     UNSCRAMBLE_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
     MATH_INCOMPLETE("<green>Games <dark_gray>» <gray>Game ended. Winners: <winners>"),
