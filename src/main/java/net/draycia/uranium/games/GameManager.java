@@ -27,7 +27,10 @@ public class GameManager implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         if (this.chatGame != null) {
             if (event.getMessage().equalsIgnoreCase(this.chatGame.getAnswer())) {
-                event.setCancelled(true);
+                if (config.shouldCancelWinningMessages()) {
+                    event.getRecipients().clear();
+                }
+
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
                     this.chatGame.onSuccess(event.getPlayer());
                     if (chatGame.isFinished()) {
