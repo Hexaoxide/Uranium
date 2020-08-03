@@ -39,6 +39,7 @@ public final class Uranium extends JavaPlugin {
 
         saveResource("words.txt", false);
         saveResource("problems.txt", false);
+        saveResource("trivia.txt", false);
 
         try {
             config = loadSettings();
