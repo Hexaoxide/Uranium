@@ -31,7 +31,7 @@ public class GameManager implements Listener {
         if (this.chatGame != null) {
             if (event.getMessage().equalsIgnoreCase(this.chatGame.getAnswer())) {
                 if (config.shouldCancelWinningMessages()) {
-                    event.getRecipients().clear();
+                    event.setCancelled(true);
                 }
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -69,46 +69,40 @@ public class GameManager implements Listener {
     }
 
     public ChatGame getRandomGame() {
-        List<Class<? extends ChatGame>> games = new ArrayList<>();
+        List<GameType> games = new ArrayList<>();
 
         if (config.getGameConfig(GameType.HANGMAN).isEnabled()) {
-            games.add(HangmanGame.class);
+            games.add(GameType.HANGMAN);
         }
 
         if (config.getGameConfig(GameType.HOVER).isEnabled()) {
-            games.add(HoverGame.class);
+            games.add(GameType.HOVER);
         }
 
         if (config.getGameConfig(GameType.MATH).isEnabled()) {
-            games.add(MathGame.class);
+            games.add(GameType.MATH);
         }
 
         if (config.getGameConfig(GameType.TRIVIA).isEnabled()) {
-            games.add(TriviaGame.class);
+            games.add(GameType.TRIVIA);
         }
 
         if (config.getGameConfig(GameType.UNSCRAMBLE).isEnabled()) {
-            games.add(UnscrambleGame.class);
+            games.add(GameType.HOVER);
         }
 
-        Class<? extends ChatGame> game = games.get(random.nextInt(games.size()));
+        GameType gameType = games.get(random.nextInt(games.size()));
 
-        try {
-            return game.getConstructor(Uranium.class).newInstance(plugin);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
-                InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        switch (random.nextInt(5)) {
-            case 0:
+        switch (gameType) {
+            case HANGMAN:
                 return new HangmanGame(plugin);
-            case 1:
-                return new MathGame(plugin);
-            case 2:
+            case HOVER:
                 return new HoverGame(plugin);
-            case 3:
+            case MATH:
+                return new MathGame(plugin);
+            case TRIVIA:
                 return new TriviaGame(plugin);
+            case UNSCRAMBLE:
             default:
                 return new UnscrambleGame(plugin);
         }
