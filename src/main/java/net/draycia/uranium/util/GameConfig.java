@@ -20,7 +20,7 @@ public class GameConfig {
                 "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
     }
 
-    private boolean isEnabled = false;
+    private boolean isEnabled = true;
 
     public GameConfig() {
     }
