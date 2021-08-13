@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -93,19 +92,13 @@ public class GameManager implements Listener {
 
         GameType gameType = games.get(random.nextInt(games.size()));
 
-        switch (gameType) {
-            case HANGMAN:
-                return new HangmanGame(plugin);
-            case HOVER:
-                return new HoverGame(plugin);
-            case MATH:
-                return new MathGame(plugin);
-            case TRIVIA:
-                return new TriviaGame(plugin);
-            case UNSCRAMBLE:
-            default:
-                return new UnscrambleGame(plugin);
-        }
+        return switch (gameType) {
+            case HANGMAN -> new HangmanGame(plugin);
+            case HOVER -> new HoverGame(plugin);
+            case MATH -> new MathGame(plugin);
+            case TRIVIA -> new TriviaGame(plugin);
+            default -> new UnscrambleGame(plugin);
+        };
     }
 
 }

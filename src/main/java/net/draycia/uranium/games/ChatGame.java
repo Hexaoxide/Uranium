@@ -194,16 +194,12 @@ public abstract class ChatGame {
     }
 
     private String getPlaceFromNumeric(int place) {
-        switch (place) {
-            case 1:
-                return "1st";
-            case 2:
-                return "2nd";
-            case 3:
-                return "3rd";
-            default:
-                return "";
-        }
+        return switch (place) {
+            case 1 -> "1st";
+            case 2 -> "2nd";
+            case 3 -> "3rd";
+            default -> "";
+        };
     }
 
 }
