@@ -7,6 +7,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'net.minecrell.plugin-yml.bukkit' version '0.4.0'
+}
+
 apply plugin: 'java'
 
 group = pluginGroup
@@ -37,7 +41,6 @@ shadowJar {
 
 jar {
     archiveFileName.set(project.name + ".jar")
-
 }
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
@@ -79,4 +82,14 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+bukkit {
+    main = 'net.draycia.uranium.Uranium'
+    description = "Adds various minigames to chat."
+    version = project.version as String
+    apiVersion = '1.13'
+    load = 'STARTUP'
+    authors = ['MTM123', 'Vicarious']
+    softDepend = ['Vault', "PlaceholderAPI"]
 }
