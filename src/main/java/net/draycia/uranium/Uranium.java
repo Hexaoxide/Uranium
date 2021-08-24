@@ -1,6 +1,7 @@
 package net.draycia.uranium;
 
-import com.google.common.reflect.TypeToken;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import net.draycia.uranium.games.GameManager;
 import net.draycia.uranium.hooks.Placeholders;
 import net.draycia.uranium.storage.MysqlStorage;
@@ -8,16 +9,12 @@ import net.draycia.uranium.storage.Storage;
 import net.draycia.uranium.util.Config;
 import net.draycia.uranium.util.GameConfig;
 import net.draycia.uranium.util.GameConfigSerializer;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.ObjectMapper;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
-import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yaml.snakeyaml.DumperOptions;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.yaml.NodeStyle;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -39,9 +36,9 @@ public final class Uranium extends JavaPlugin {
 
         try {
             config = loadSettings();
-        } catch (ObjectMappingException | IOException e) {
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Failed to load config. See below for exception.");
             e.printStackTrace();
-            getLogger().log(Level.SEVERE, "Failed to load config. Check logs.");
         }
 
         if (config.getDatabaseCredentials().isEnabled()) {
@@ -82,34 +79,39 @@ public final class Uranium extends JavaPlugin {
         return gameManager;
     }
 
-    private Config loadSettings() throws ObjectMappingException, IOException {
-        File mainDir = getDataFolder().getAbsoluteFile();
-        if (!mainDir.exists()) {
-            //noinspection ResultOfMethodCallIgnored - Not interested in knowing the result
-            mainDir.mkdirs();
+    private Config loadSettings() throws IOException {
+        final Path dataDirectory = getDataFolder().toPath();
+
+        if (!Files.exists(dataDirectory)) {
+            Files.createDirectories(dataDirectory);
         }
 
-        File cfgFile = new File(getDataFolder().getAbsoluteFile(), "config.yml");
+        Path configFile = dataDirectory.resolve("config.yml");
 
-        //noinspection UnstableApiUsage
-        TypeSerializerCollection.defaults().register(TypeToken.of(GameConfig.class), new GameConfigSerializer());
-
-        ObjectMapper<Config>.BoundInstance instance = ObjectMapper.forClass(Config.class).bindToNew();
-        YAMLConfigurationLoader loader = YAMLConfigurationLoader.builder()
-                .setFile(cfgFile)
-                .setFlowStyle(DumperOptions.FlowStyle.BLOCK)
+        YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
+                .path(configFile)
+                .nodeStyle(NodeStyle.BLOCK)
+                .defaultOptions(options -> {
+                    return options.shouldCopyDefaults(true).serializers(serializerBuilder ->
+                            serializerBuilder.register(GameConfig.class, new GameConfigSerializer())
+                    );
+                })
                 .build();
 
-        // Pretty sure I'm doing this part wrong
-        ConfigurationNode node = ConfigurationNode.root();
-        if (!cfgFile.exists()) {
-            instance.serialize(node);
-            loader.save(node);
+        try {
+            final var node = loader.load();
+            final Config gameConfig = node.get(Config.class);
+
+            if (!Files.exists(configFile)) {
+                node.set(Config.class, gameConfig);
+                loader.save(node);
+            }
+
+            return gameConfig;
+        } catch (final ConfigurateException exception) {
+            exception.printStackTrace();
+            return new Config();
         }
-
-        instance.populate(loader.load());
-
-        return instance.getInstance();
     }
 
     public Storage getStorage() {

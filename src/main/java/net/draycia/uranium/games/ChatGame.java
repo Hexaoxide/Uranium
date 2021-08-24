@@ -3,7 +3,6 @@ package net.draycia.uranium.games;
 import net.draycia.uranium.Uranium;
 import net.draycia.uranium.util.Config;
 import net.draycia.uranium.util.GameConfig;
-import net.draycia.uranium.util.MessageKey;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 import org.bukkit.Bukkit;
@@ -59,11 +58,11 @@ public abstract class ChatGame {
     abstract GameType getGameType();
 
     public String getFailureMessage() {
-        return config.getMessage(MessageKey.FAILURE).get(0);
+        return config.getMessages().failure();
     }
 
-    public String getIncompleteMessage() {
-        return config.getMessage(MessageKey.TYPE_INCOMPLETE).get(0);
+    public String getCompleteMessage() {
+        return config.getMessages().typeComplete();
     }
 
     String getRandomWord() {
@@ -90,7 +89,7 @@ public abstract class ChatGame {
         }
     }
 
-    public void onStart(final String message) {
+    public void broadcastFormat(final String message) {
         Bukkit.broadcast(MiniMessage.get().parse(message,
                 Template.of("word", this.getDisplayText()),
                 Template.of("hover", this.getDisplayText())));
@@ -110,7 +109,7 @@ public abstract class ChatGame {
         getRewardCommands(place).forEach(reward -> {
             reward = reward.replace("%player%", player.getName())
                     .replace("%time%", time)
-                    .replace("%place%", getPlaceFromNumeric(place));
+                    .replace("%place%", ordinal(place));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), reward);
         });
 
@@ -123,20 +122,20 @@ public abstract class ChatGame {
         String message;
 
         if (hasAnyWins()) {
-            message = setPlaceholders(getIncompleteMessage());
+            message = setPlaceholders(getCompleteMessage());
         } else {
             message = getFailureMessage();
         }
 
-        Bukkit.broadcast(MiniMessage.get().parse(message, "word", this.getAnswer()));
+        Bukkit.broadcast(MiniMessage.get().parse(message, Template.of("word", this.getAnswer())));
 
         this.onFinish();
     }
 
     public String setPlaceholders(String string) {
 
-        String format = config.getMessage(MessageKey.WINNERS_FORMAT).get(0);
-        String sep = config.getMessage(MessageKey.WINNERS_SEPARATOR).get(0);
+        String format = config.getMessages().winners();
+        String sep = config.getMessages().winnersSeparator();
 
         List<String> winnerEntries = new ArrayList<>();
 
@@ -181,12 +180,13 @@ public abstract class ChatGame {
         gameManager.startNewGame();
     }
 
-    private String getPlaceFromNumeric(int place) {
-        return switch (place) {
-            case 1 -> "1st";
-            case 2 -> "2nd";
-            case 3 -> "3rd";
-            default -> "";
+    private final String[] suffixes =
+            new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+
+    private String ordinal(int i) {
+        return switch (i % 100) {
+            case 11, 12, 13 -> i + "th";
+            default -> i + suffixes[i % 10];
         };
     }
 

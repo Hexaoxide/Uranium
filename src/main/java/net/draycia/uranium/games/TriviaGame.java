@@ -2,7 +2,6 @@ package net.draycia.uranium.games;
 
 import net.draycia.uranium.Uranium;
 import net.draycia.uranium.util.GameConfig;
-import net.draycia.uranium.util.MessageKey;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class TriviaGame extends ChatGame {
         problem = in[0];
         solution = in[1];
 
-        super.onStart(getConfig().getMessage(MessageKey.TRIVIA_START).get(0));
+        super.broadcastFormat(getConfig().getMessages().triviaStart());
     }
 
     @Override
@@ -37,17 +36,22 @@ public class TriviaGame extends ChatGame {
     }
 
     @Override
-    GameConfig getGameConfig() {
+    public GameConfig getGameConfig() {
         return this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
-    List<String> getRewardCommands(int place) {
+    public List<String> getRewardCommands(int place) {
         return this.getGameConfig().getCommandRewards(place);
     }
 
     @Override
-    GameType getGameType() {
+    public String getCompleteMessage() {
+        return getConfig().getMessages().triviaComplete();
+    }
+
+    @Override
+    public GameType getGameType() {
         return GameType.TRIVIA;
     }
 

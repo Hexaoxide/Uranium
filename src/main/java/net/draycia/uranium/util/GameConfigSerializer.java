@@ -1,26 +1,28 @@
 package net.draycia.uranium.util;
 
 import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import java.lang.reflect.Type;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
 public class GameConfigSerializer implements TypeSerializer<GameConfig> {
 
-    @Nullable
+    private Type commandRewardsType = new TypeToken<Map<Integer, List<String>>>() {}.getType();
+
     @Override
-    public GameConfig deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) {
-        String fileName = value.getNode("supplementary-file").getString();
-        Map<Integer, List<String>> commandRewards = (Map<Integer, List<String>>) value.getNode("command-rewards").getValue();
-        boolean isEnabled = value.getNode("is-enabled").getBoolean();
+    public GameConfig deserialize(Type type, ConfigurationNode value) throws SerializationException {
+        String fileName = value.node("supplementary-file").getString();
+        Map<Integer, List<String>> commandRewards = (Map<Integer, List<String>>) value.node("command-rewards").get(commandRewardsType);
+        boolean isEnabled = value.node("is-enabled").getBoolean();
 
-        ConfigurationNode dashNode = value.getNode("dash-percentage");
+        ConfigurationNode dashNode = value.node("dash-percentage");
 
-        if (!dashNode.isVirtual()) {
+        if (!dashNode.virtual()) {
             return new HangmanConfig(fileName, isEnabled, commandRewards, dashNode.getDouble());
         }
 
@@ -28,18 +30,17 @@ public class GameConfigSerializer implements TypeSerializer<GameConfig> {
     }
 
     @Override
-    public void serialize(@NonNull TypeToken<?> type, @Nullable GameConfig obj, @NonNull ConfigurationNode value) {
+    public void serialize(Type type, @Nullable GameConfig obj, ConfigurationNode value) throws SerializationException {
         if (obj == null) {
             return;
         }
 
-        value.getNode("supplementary-file").setValue(obj.getSupplementaryFile());
-        value.getNode("command-rewards").setValue(obj.getAllCommandRewards());
-        value.getNode("is-enabled").setValue(obj.isEnabled());
+        value.node("supplementary-file").set(obj.getSupplementaryFile());
+        value.node("command-rewards").set(obj.getAllCommandRewards());
+        value.node("is-enabled").set(obj.isEnabled());
 
         if (obj instanceof HangmanConfig) {
-            value.getNode("dash-percentage").setValue(((HangmanConfig) obj).getDashPercentage());
+            value.node("dash-percentage").set(((HangmanConfig) obj).getDashPercentage());
         }
     }
-
 }
