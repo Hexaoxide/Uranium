@@ -14,12 +14,12 @@ public class GameConfigSerializer implements TypeSerializer<GameConfig> {
     @Nullable
     @Override
     public GameConfig deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) {
-
         String fileName = value.getNode("supplementary-file").getString();
         Map<Integer, List<String>> commandRewards = (Map<Integer, List<String>>) value.getNode("command-rewards").getValue();
         boolean isEnabled = value.getNode("is-enabled").getBoolean();
 
         ConfigurationNode dashNode = value.getNode("dash-percentage");
+
         if (!dashNode.isVirtual()) {
             return new HangmanConfig(fileName, isEnabled, commandRewards, dashNode.getDouble());
         }

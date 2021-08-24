@@ -4,7 +4,6 @@ import net.draycia.uranium.games.GameType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,14 +23,13 @@ public class Config {
     private DatabaseCredentials databaseCredentials = new DatabaseCredentials();
 
     @Setting(value = "game-config")
-    private Map<GameType, GameConfig> gameConfig = new LinkedHashMap<>();
-    {
-        gameConfig.put(GameType.MATH, new GameConfig("problems.txt"));
-        gameConfig.put(GameType.HOVER, new GameConfig());
-        gameConfig.put(GameType.UNSCRAMBLE, new GameConfig());
-        gameConfig.put(GameType.HANGMAN, new HangmanConfig());
-        gameConfig.put(GameType.TRIVIA, new GameConfig("trivia.txt"));
-    }
+    private Map<GameType, GameConfig> gameConfig = Map.of(
+            GameType.MATH, new GameConfig("problems.txt"),
+            GameType.HOVER, new GameConfig(),
+            GameType.UNSCRAMBLE, new GameConfig(),
+            GameType.HANGMAN, new HangmanConfig(),
+            GameType.TRIVIA, new GameConfig("trivia.txt")
+    );
 
     @Setting
     private Map<MessageKey, List<String>> language = MessageKey.getDefaultMessages();

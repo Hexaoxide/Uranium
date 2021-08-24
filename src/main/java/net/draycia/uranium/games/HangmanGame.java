@@ -33,12 +33,12 @@ public class HangmanGame extends ChatGame {
 
     @Override
     HangmanConfig getGameConfig() {
-        return (HangmanConfig) getConfig().getGameConfig(GameType.HANGMAN);
+        return (HangmanConfig) this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
     List<String> getRewardCommands(int place) {
-        return getGameConfig().getCommandRewards(place);
+        return this.getGameConfig().getCommandRewards(place);
     }
 
     @Override

@@ -10,8 +10,8 @@ import java.util.List;
 
 public class UnscrambleGame extends ChatGame {
 
-    private String word;
-    private String displayWord;
+    private final String word;
+    private final String displayWord;
 
     public UnscrambleGame(Uranium main) {
         super(main);
@@ -48,12 +48,12 @@ public class UnscrambleGame extends ChatGame {
 
     @Override
     GameConfig getGameConfig() {
-        return getConfig().getGameConfig(GameType.UNSCRAMBLE);
+        return this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
     List<String> getRewardCommands(int place) {
-        return getConfig().getGameConfig(GameType.UNSCRAMBLE).getCommandRewards(place);
+        return this.getConfig().getGameConfig(this.getGameType()).getCommandRewards(place);
     }
 
     @Override

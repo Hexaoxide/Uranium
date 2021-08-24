@@ -38,12 +38,12 @@ public class MathGame extends ChatGame {
 
     @Override
     GameConfig getGameConfig() {
-        return getConfig().getGameConfig(GameType.MATH);
+        return this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
     List<String> getRewardCommands(int place) {
-        return getGameConfig().getCommandRewards(place);
+        return this.getGameConfig().getCommandRewards(place);
     }
 
     @Override

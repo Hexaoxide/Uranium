@@ -8,7 +8,6 @@ import net.draycia.uranium.storage.Storage;
 import net.draycia.uranium.util.Config;
 import net.draycia.uranium.util.GameConfig;
 import net.draycia.uranium.util.GameConfigSerializer;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -30,13 +29,10 @@ public final class Uranium extends JavaPlugin {
 
     private GameManager gameManager;
     private Config config;
-    private BukkitAudiences audiences;
-    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    private final DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     @Override
     public void onEnable() {
-        audiences = BukkitAudiences.create(this);
-
         saveResource("words.txt", false);
         saveResource("problems.txt", false);
         saveResource("trivia.txt", false);
@@ -118,9 +114,5 @@ public final class Uranium extends JavaPlugin {
 
     public Storage getStorage() {
         return storage;
-    }
-
-    public BukkitAudiences getAudiences() {
-        return audiences;
     }
 }

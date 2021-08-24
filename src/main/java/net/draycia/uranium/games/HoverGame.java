@@ -8,7 +8,7 @@ import java.util.List;
 
 public class HoverGame extends ChatGame {
 
-    private String word;
+    private final String word;
 
     public HoverGame(Uranium main) {
         super(main);
@@ -27,12 +27,12 @@ public class HoverGame extends ChatGame {
 
     @Override
     GameConfig getGameConfig() {
-        return getConfig().getGameConfig(GameType.HOVER);
+        return this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
     List<String> getRewardCommands(int place) {
-        return getConfig().getGameConfig(GameType.HOVER).getCommandRewards(place);
+        return this.getConfig().getGameConfig(this.getGameType()).getCommandRewards(place);
     }
 
     @Override
