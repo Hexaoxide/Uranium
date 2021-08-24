@@ -65,7 +65,9 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.10.5'
-    implementation 'net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT'
+    implementation('net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT') {
+        exclude group: 'net.kyori', module: 'adventure-api'
+    }
     implementation 'net.kyori:adventure-text-serializer-plain:4.8.1'
     implementation 'org.spongepowered:configurate-yaml:4.1.2'
     implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
