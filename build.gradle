@@ -35,6 +35,15 @@ tasks.withType(JavaCompile) {
 
 shadowJar {
     minimize()
+    relocate 'net.kyori.adventure.text.minimessage', 'net.draycia.uranium.libs.net.kyori.adventure.text.minimessage'
+    relocate 'com.google', 'net.draycia.uranium.libs.com.google'
+    relocate 'com.zaxxer', 'net.draycia.uranium.libs.com.zaxxer'
+    relocate 'co.aikar', 'net.draycia.uranium.libs.co.aikar'
+    relocate 'org.checkerframework', 'net.draycia.uranium.libs.org.checkerframework'
+    relocate 'org.slf4j', 'net.draycia.uranium.libs.org.slf4j'
+    relocate 'org.codehaus', 'net.draycia.uranium.libs.org.codehaus'
+    relocate 'org.yaml', 'net.draycia.uranium.libs.org.yaml'
+    relocate 'org.spongepowered.configurate', 'net.draycia.uranium.libs.org.spongepowered.configurate'
     archiveClassifier.set("")
     archiveFileName.set(project.name + ".jar")
 }
@@ -42,15 +51,6 @@ shadowJar {
 jar {
     archiveFileName.set(project.name + ".jar")
 }
-
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-
-task relocateShadowJar(type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = "net.draycia.uranium.libs" // Default value is "shadow"
-}
-
-tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
 repositories {
     mavenCentral()
