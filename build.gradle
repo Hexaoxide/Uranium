@@ -9,6 +9,7 @@ buildscript {
 
 plugins {
     id 'net.minecrell.plugin-yml.bukkit' version '0.4.0'
+    id 'xyz.jpenilla.run-paper' version '1.0.4'
 }
 
 apply plugin: 'java'
@@ -37,7 +38,6 @@ shadowJar {
     minimize()
     relocate 'net.kyori.adventure.text.minimessage', 'net.draycia.uranium.libs.net.kyori.adventure.text.minimessage'
     relocate 'net.kyori.adventure.text.serializer.plain', 'net.draycia.uranium.libs.net.kyori.adventure.serializer.plain'
-    relocate 'com.google', 'net.draycia.uranium.libs.com.google'
     relocate 'com.zaxxer', 'net.draycia.uranium.libs.com.zaxxer'
     relocate 'co.aikar', 'net.draycia.uranium.libs.co.aikar'
     relocate 'org.checkerframework', 'net.draycia.uranium.libs.org.checkerframework'
@@ -96,4 +96,13 @@ bukkit {
     load = 'STARTUP'
     authors = ['MTM123', 'Vicarious']
     softDepend = ['Vault', "PlaceholderAPI"]
+}
+
+tasks {
+    runServer {
+        // Configure the Minecraft version for our task.
+        // This is the only required configuration besides applying the plugin.
+        // Your plugin's jar (or shadowJar if present) will be used automatically.
+        minecraftVersion("1.17.1")
+    }
 }

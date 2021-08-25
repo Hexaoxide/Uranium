@@ -1,6 +1,6 @@
 package net.draycia.uranium.util;
 
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
