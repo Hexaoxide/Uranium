@@ -6,6 +6,7 @@ import net.draycia.uranium.games.GameType;
 import net.draycia.uranium.storage.GameStats;
 import net.draycia.uranium.storage.Storage;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class Placeholders extends PlaceholderExpansion {
 
@@ -43,34 +44,52 @@ public class Placeholders extends PlaceholderExpansion {
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, String identifier) {
+    public @Nullable String onPlaceholderRequest(Player player, String identifier) {
         if (storage == null) {
-            return "";
+            return null;
         }
 
         if (player == null) {
-            return "";
+            return null;
         }
 
         if (identifier.equals("total_wins")) {
-            return String.valueOf(storage.getTotalWins(player.getUniqueId()));
+            return getTotalWins(player);
+        } else if (identifier.endsWith("wins")) {
+            return getGameWins(player, identifier);
+        } else if (identifier.endsWith("record")) {
+            return  getGameRecordTime(player, identifier);
         } else {
-            GameType gameType = getGameType(identifier);
+            return null;
+        }
+    }
 
-            if (gameType == null) {
-                return null;
-            }
+    private String getTotalWins(final Player player) {
+        return String.valueOf(storage.getTotalWins(player.getUniqueId()));
+    }
 
-            GameStats stats = storage.getGameStats(player.getUniqueId(), gameType);
+    private String getGameWins(final Player player, final String identifier) {
+        GameType gameType = getGameType(identifier);
 
-            if (identifier.endsWith("wins")) {
-                return String.valueOf(stats.getTimesWon());
-            } else if (identifier.endsWith("record")) {
-                return stats.getRecordTime() == 0 ? "N/A" : String.valueOf(stats.getRecordTime());
-            }
+        if (gameType == null) {
+            return null;
         }
 
-        return null;
+        GameStats stats = storage.getGameStats(player.getUniqueId(), gameType);
+
+        return String.valueOf(stats.getTimesWon());
+    }
+
+    private String getGameRecordTime(final Player player, final String identifier) {
+        GameType gameType = getGameType(identifier);
+
+        if (gameType == null) {
+            return null;
+        }
+
+        GameStats stats = storage.getGameStats(player.getUniqueId(), gameType);
+
+        return stats.getRecordTime() == 0 ? "N/A" : String.valueOf(stats.getRecordTime());
     }
 
     private GameType getGameType(String placeholder) {
