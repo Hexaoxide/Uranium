@@ -36,6 +36,7 @@ tasks.withType(JavaCompile) {
 shadowJar {
     minimize()
     relocate 'net.kyori.adventure.text.minimessage', 'net.draycia.uranium.libs.net.kyori.adventure.text.minimessage'
+    relocate 'net.kyori.adventure.text.serializer.plain', 'net.draycia.uranium.libs.net.kyori.adventure.serializer.plain'
     relocate 'com.google', 'net.draycia.uranium.libs.com.google'
     relocate 'com.zaxxer', 'net.draycia.uranium.libs.com.zaxxer'
     relocate 'co.aikar', 'net.draycia.uranium.libs.co.aikar'
@@ -44,6 +45,7 @@ shadowJar {
     relocate 'org.codehaus', 'net.draycia.uranium.libs.org.codehaus'
     relocate 'org.yaml', 'net.draycia.uranium.libs.org.yaml'
     relocate 'org.spongepowered.configurate', 'net.draycia.uranium.libs.org.spongepowered.configurate'
+    relocate 'io.leangen.geantyref', 'net.draycia.uranium.libs.io.leangen.geantyref'
     archiveClassifier.set("")
     archiveFileName.set(project.name + ".jar")
 }
@@ -68,7 +70,9 @@ dependencies {
     implementation('net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT') {
         exclude group: 'net.kyori', module: 'adventure-api'
     }
-    implementation 'net.kyori:adventure-text-serializer-plain:4.8.1'
+    implementation('net.kyori:adventure-text-serializer-plain:4.8.1') {
+        exclude group: 'net.kyori', module: 'adventure-api'
+    }
     implementation 'org.spongepowered:configurate-yaml:4.1.2'
     implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
     implementation "com.zaxxer:HikariCP:2.4.1"
