@@ -65,17 +65,27 @@ repositories {
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    // Paper & Plugins
     compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.10.5'
+    compileOnly 'me.clip:placeholderapi:2.10.10'
+
+    // Kyori
     implementation('net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT') {
         exclude group: 'net.kyori', module: 'adventure-api'
     }
     implementation('net.kyori:adventure-text-serializer-plain:4.8.1') {
         exclude group: 'net.kyori', module: 'adventure-api'
     }
+
+    // Sponge
     implementation 'org.spongepowered:configurate-yaml:4.1.2'
+
+    // Misc
+    implementation "com.zaxxer:HikariCP:5.0.0"
+
+    // Phase these out
     implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
-    implementation "com.zaxxer:HikariCP:2.4.1"
     implementation "co.aikar:idb-bukkit:1.0.0-SNAPSHOT"
 }
 
@@ -100,9 +110,6 @@ bukkit {
 
 tasks {
     runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.17.1")
     }
 }
