@@ -2,7 +2,6 @@ package net.draycia.uranium.games;
 
 import net.draycia.uranium.Uranium;
 import net.draycia.uranium.util.HangmanConfig;
-import net.draycia.uranium.util.MessageKey;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,7 +17,7 @@ public class HangmanGame extends ChatGame {
         word = getRandomWord();
         display = makeDashedWord(word);
 
-        super.onStart(getConfig().getMessage(MessageKey.HANGMAN_START).get(0));
+        super.broadcastFormat(getConfig().getMessages().hangmanStart());
     }
 
     @Override
@@ -32,17 +31,22 @@ public class HangmanGame extends ChatGame {
     }
 
     @Override
-    HangmanConfig getGameConfig() {
-        return (HangmanConfig) getConfig().getGameConfig(GameType.HANGMAN);
+    public HangmanConfig getGameConfig() {
+        return (HangmanConfig) this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
-    List<String> getRewardCommands(int place) {
-        return getGameConfig().getCommandRewards(place);
+    public List<String> getRewardCommands(int place) {
+        return this.getGameConfig().getCommandRewards(place);
     }
 
     @Override
-    GameType getGameType() {
+    public String getCompleteMessage() {
+        return getConfig().getMessages().hangmanComplete();
+    }
+
+    @Override
+    public GameType getGameType() {
         return GameType.HANGMAN;
     }
 

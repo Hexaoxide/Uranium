@@ -1,10 +1,15 @@
 buildscript {
     repositories {
-        jcenter()
+        gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
     }
+}
+
+plugins {
+    id 'net.minecrell.plugin-yml.bukkit' version '0.4.0'
+    id 'xyz.jpenilla.run-paper' version '1.0.4'
 }
 
 apply plugin: 'java'
@@ -12,8 +17,8 @@ apply plugin: 'java'
 group = pluginGroup
 version = pluginVersion
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '16'
+targetCompatibility = '16'
 
 apply plugin: "com.github.johnrengelman.shadow"
 
@@ -31,23 +36,23 @@ tasks.withType(JavaCompile) {
 
 shadowJar {
     minimize()
+    relocate 'net.kyori.adventure.text.minimessage', 'net.draycia.uranium.libs.net.kyori.adventure.text.minimessage'
+    relocate 'net.kyori.adventure.text.serializer.plain', 'net.draycia.uranium.libs.net.kyori.adventure.serializer.plain'
+    relocate 'com.zaxxer', 'net.draycia.uranium.libs.com.zaxxer'
+    relocate 'co.aikar', 'net.draycia.uranium.libs.co.aikar'
+    relocate 'org.checkerframework', 'net.draycia.uranium.libs.org.checkerframework'
+    relocate 'org.slf4j', 'net.draycia.uranium.libs.org.slf4j'
+    relocate 'org.codehaus', 'net.draycia.uranium.libs.org.codehaus'
+    relocate 'org.yaml', 'net.draycia.uranium.libs.org.yaml'
+    relocate 'org.spongepowered.configurate', 'net.draycia.uranium.libs.org.spongepowered.configurate'
+    relocate 'io.leangen.geantyref', 'net.draycia.uranium.libs.io.leangen.geantyref'
     archiveClassifier.set("")
     archiveFileName.set(project.name + ".jar")
 }
 
 jar {
     archiveFileName.set(project.name + ".jar")
-
 }
-
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-
-task relocateShadowJar(type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-    prefix = "net.draycia.uranium.libs" // Default value is "shadow"
-}
-
-tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
 repositories {
     mavenCentral()
@@ -59,23 +64,52 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
-    compileOnly 'me.clip:placeholderapi:2.10.5'
-    compile 'net.kyori:adventure-api:4.0.0-SNAPSHOT'
-    compile 'net.kyori:text-adapter-bukkit:3.0.3'
-    compile 'net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT'
-    compile 'net.kyori:adventure-text-minimessage:3.0.0-SNAPSHOT'
-    compile 'org.spongepowered:configurate-yaml:3.7'
-    compile "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
-    compile "com.zaxxer:HikariCP:2.4.1"
-    compile "co.aikar:idb-bukkit:1.0.0-SNAPSHOT"
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+
+    // Paper & Plugins
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.10.10'
+
+    // Kyori
+    implementation('net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT') {
+        exclude group: 'net.kyori', module: 'adventure-api'
+    }
+    implementation('net.kyori:adventure-text-serializer-plain:4.8.1') {
+        exclude group: 'net.kyori', module: 'adventure-api'
+    }
+
+    // Sponge
+    implementation 'org.spongepowered:configurate-yaml:4.1.2'
+
+    // Misc
+    implementation "com.zaxxer:HikariCP:5.0.0"
+
+    // Phase these out
+    implementation "co.aikar:acf-bukkit:0.5.0-SNAPSHOT"
+    implementation "co.aikar:idb-bukkit:1.0.0-SNAPSHOT"
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
+    duplicatesStrategy = 'include'
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
+    }
+}
+
+bukkit {
+    main = 'net.draycia.uranium.Uranium'
+    description = "Adds various minigames to chat."
+    version = project.version as String
+    apiVersion = '1.13'
+    load = 'STARTUP'
+    authors = ['MTM123', 'Vicarious']
+    softDepend = ['Vault', "PlaceholderAPI"]
+}
+
+tasks {
+    runServer {
+        minecraftVersion("1.17.1")
     }
 }

@@ -2,19 +2,18 @@ package net.draycia.uranium.games;
 
 import net.draycia.uranium.Uranium;
 import net.draycia.uranium.util.GameConfig;
-import net.draycia.uranium.util.MessageKey;
 
 import java.util.List;
 
 public class HoverGame extends ChatGame {
 
-    private String word;
+    private final String word;
 
     public HoverGame(Uranium main) {
         super(main);
         this.word = this.getRandomWord();
 
-        super.onStart(getConfig().getMessage(MessageKey.TYPE_START).get(0));
+        super.broadcastFormat(getConfig().getMessages().typeStart());
     }
 
     public String getAnswer() {
@@ -26,17 +25,22 @@ public class HoverGame extends ChatGame {
     }
 
     @Override
-    GameConfig getGameConfig() {
-        return getConfig().getGameConfig(GameType.HOVER);
+    public GameConfig getGameConfig() {
+        return this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
-    List<String> getRewardCommands(int place) {
-        return getConfig().getGameConfig(GameType.HOVER).getCommandRewards(place);
+    public List<String> getRewardCommands(int place) {
+        return this.getConfig().getGameConfig(this.getGameType()).getCommandRewards(place);
     }
 
     @Override
-    GameType getGameType() {
+    public String getCompleteMessage() {
+        return getConfig().getMessages().typeComplete();
+    }
+
+    @Override
+    public GameType getGameType() {
         return GameType.HOVER;
     }
 

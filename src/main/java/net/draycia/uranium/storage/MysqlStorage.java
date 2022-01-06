@@ -2,6 +2,7 @@ package net.draycia.uranium.storage;
 
 import co.aikar.idb.BukkitDB;
 import co.aikar.idb.DB;
+import co.aikar.idb.PooledDatabaseOptions;
 import net.draycia.uranium.Uranium;
 import net.draycia.uranium.games.GameType;
 import net.draycia.uranium.util.DatabaseCredentials;
@@ -32,8 +33,13 @@ public class MysqlStorage implements Storage, Listener {
 
     private void init() throws SQLException {
         DatabaseCredentials creds = plugin.getSettings().getDatabaseCredentials();
-        BukkitDB.createHikariDatabase(plugin, creds.getUser(), creds.getPassword(), creds.getDatabase(),
+
+        PooledDatabaseOptions options = BukkitDB.getRecommendedOptions(plugin,
+                creds.getUser(), creds.getPassword(), creds.getDatabase(),
                 creds.getHost() + ":" + creds.getPort());
+
+        options.getOptions().setDriverClassName("com.mysql.cj.jdbc.Driver");
+        BukkitDB.createHikariDatabase(plugin, options);
 
         DB.executeUpdate("CREATE TABLE IF NOT EXISTS `game_stats` (" +
                 "`uuid` binary(16) NOT NULL," +
@@ -54,7 +60,7 @@ public class MysqlStorage implements Storage, Listener {
     }
 
     private void loadPlayer(UUID uuid) {
-        DB.getResultsAsync("SELECT * FROM `game_stats` WHERE `uuid`=?;", (Object) getBytesFromUUID(uuid)).thenAcceptAsync(res -> {
+        DB.getResultsAsync("SELECT * FROM `game_stats` WHERE `uuid`=?;", getBytesFromUUID(uuid)).thenAcceptAsync(res -> {
             if (res == null || res.size() == 0) {
                 Arrays.stream(GameType.values()).forEach(type -> savePlayer(uuid, type, 0, false));
             } else {

@@ -1,7 +1,6 @@
 package net.draycia.uranium.util;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,16 +8,14 @@ public class GameConfig {
 
     private String supplementaryFile = "words.txt";
 
-    private Map<Integer, List<String>> commandRewards = new LinkedHashMap<>();
-
-    {
-        commandRewards.put(1, Arrays.asList("eco give %player% 1500",
-                "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
-        commandRewards.put(2, Arrays.asList("eco give %player% 1000",
-                "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
-        commandRewards.put(3, Arrays.asList("eco give %player% 500",
-                "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"));
-    }
+    private Map<Integer, List<String>> commandRewards = Map.of(
+            1, Arrays.asList("eco give %player% 1500",
+                    "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"),
+            2, Arrays.asList("eco give %player% 1000",
+                    "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!"),
+            3, Arrays.asList("eco give %player% 500",
+                    "broadcast &a%player%&7 answered &a%place%&7 in &a%time%&7 seconds!")
+    );
 
     private boolean isEnabled = true;
 

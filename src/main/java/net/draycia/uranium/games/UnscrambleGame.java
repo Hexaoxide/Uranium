@@ -3,22 +3,21 @@ package net.draycia.uranium.games;
 import com.google.common.primitives.Chars;
 import net.draycia.uranium.Uranium;
 import net.draycia.uranium.util.GameConfig;
-import net.draycia.uranium.util.MessageKey;
 
 import java.util.Collections;
 import java.util.List;
 
 public class UnscrambleGame extends ChatGame {
 
-    private String word;
-    private String displayWord;
+    private final String word;
+    private final String displayWord;
 
     public UnscrambleGame(Uranium main) {
         super(main);
         this.word = super.getRandomWord();
         this.displayWord = this.scrambleWord(this.getAnswer());
 
-        super.onStart(getConfig().getMessage(MessageKey.UNSCRAMBLE_START).get(0));
+        super.broadcastFormat(getConfig().getMessages().unscrambleStart());
     }
 
     public String getAnswer() {
@@ -47,17 +46,22 @@ public class UnscrambleGame extends ChatGame {
     }
 
     @Override
-    GameConfig getGameConfig() {
-        return getConfig().getGameConfig(GameType.UNSCRAMBLE);
+    public GameConfig getGameConfig() {
+        return this.getConfig().getGameConfig(this.getGameType());
     }
 
     @Override
-    List<String> getRewardCommands(int place) {
-        return getConfig().getGameConfig(GameType.UNSCRAMBLE).getCommandRewards(place);
+    public List<String> getRewardCommands(int place) {
+        return this.getConfig().getGameConfig(this.getGameType()).getCommandRewards(place);
     }
 
     @Override
-    GameType getGameType() {
+    public String getCompleteMessage() {
+        return getConfig().getMessages().unscrambleComplete();
+    }
+
+    @Override
+    public GameType getGameType() {
         return GameType.UNSCRAMBLE;
     }
 
